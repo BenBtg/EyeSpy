@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabbedPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:views="clr-namespace:EyeSpyApp.Views" 
+    x:Class="EyeSpyApp.Views.MainPage"
+    xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+    android:TabbedPage.ToolbarPlacement="Bottom"
+    android:TabbedPage.BarItemColor="#4a672a"
+    android:TabbedPage.BarSelectedItemColor="White"
+    android:TabbedPage.BarBackgroundColor="#8bc34a">
+    <TabbedPage.Children>
+        <NavigationPage Title="Household" Icon="tab_feed.png">
+            <x:Arguments>
+                <views:ItemsPage />
+            </x:Arguments>
+        </NavigationPage>
+        <NavigationPage Title="About" Icon="tab_about.png">
+            <x:Arguments>
+                <views:AboutPage />
+            </x:Arguments>
+        </NavigationPage>
+    </TabbedPage.Children>
+</TabbedPage>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="EyeSpy" parent="EyeSpy.Base">
+    </style>
+    
+    <style name="EyeSpy.Base" parent="Theme.AppCompat.Light">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">#8bc34a</item>
+        <item name="colorPrimaryDark">#4a672a</item>
+        <item name="colorAccent">#8bc34a</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:datePickerDialogTheme">@style/EyeSpy.DialogStyle</item>
+        <item name="android:actionBarStyle">@style/EyeSpy.ActionBarStyle</item>
+        <item name="actionBarStyle">@style/EyeSpy.ActionBarStyle</item>
+    </style>
+    <style name="EyeSpy.DialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">#8bc34a</item>
+    </style>
+
+     <style name="EyeSpy.ActionBarStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+         <item name="android:background">#8bc34a</item>
+    </style>
+</resources>
