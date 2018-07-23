@@ -6,9 +6,9 @@ using Xamarin.Forms.Xaml;
 namespace EyeSpyApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : TabbedPage
+    public partial class HomePage : TabbedPage
     {
-        public MainPage()
+        public HomePage()
         {
             InitializeComponent();
         }

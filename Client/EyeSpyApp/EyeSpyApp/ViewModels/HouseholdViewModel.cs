@@ -8,26 +8,26 @@ using Xamarin.Forms;
 
 namespace EyeSpyApp.ViewModels
 {
-    public class ItemsViewModel : BaseViewModel
+    public class HouseholdViewModel : BaseViewModel
     {
-        public ObservableCollection<Item> Items { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        public ObservableCollection<HouseholdMember> Members { get; set; }
+        public Command LoadMembersCommand { get; set; }
 
-        public ItemsViewModel()
+        public HouseholdViewModel()
         {
-            Title = "Browse";
-            Items = new ObservableCollection<Item>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            Title = "Household";
+            Members = new ObservableCollection<HouseholdMember>();
+            LoadMembersCommand = new Command(async () => await ExecuteLoadMembersCommand());
 
-            MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
+            MessagingCenter.Subscribe<NewMemberPage, HouseholdMember>(this, "AddMember", async (obj, item) =>
             {
-                var _item = item as Item;
-                Items.Add(_item);
+                var _item = item as HouseholdMember;
+                Members.Add(_item);
                 await DataStore.AddItemAsync(_item);
             });
         }
 
-        async Task ExecuteLoadItemsCommand()
+        private async Task ExecuteLoadMembersCommand()
         {
             if (IsBusy)
                 return;
@@ -36,11 +36,11 @@ namespace EyeSpyApp.ViewModels
 
             try
             {
-                Items.Clear();
+                Members.Clear();
                 var items = await DataStore.GetItemsAsync(true);
                 foreach (var item in items)
                 {
-                    Items.Add(item);
+                    Members.Add(item);
                 }
             }
             catch (Exception ex)

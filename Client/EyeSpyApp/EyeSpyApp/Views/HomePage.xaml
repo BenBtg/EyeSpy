@@ -3,7 +3,8 @@
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     xmlns:views="clr-namespace:EyeSpyApp.Views" 
-    x:Class="EyeSpyApp.Views.MainPage"
+    xmlns:vm="clr-namespace:EyeSpyApp.ViewModels" 
+    x:Class="EyeSpyApp.Views.HomePage"
     xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
     android:TabbedPage.ToolbarPlacement="Bottom"
     android:TabbedPage.BarItemColor="#4a672a"
@@ -12,7 +13,7 @@
     <TabbedPage.Children>
         <NavigationPage Title="Household" Icon="tab_feed.png">
             <x:Arguments>
-                <views:ItemsPage />
+                <views:HouseholdPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage Title="About" Icon="tab_about.png">

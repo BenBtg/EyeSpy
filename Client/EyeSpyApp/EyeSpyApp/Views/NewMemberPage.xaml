@@ -2,8 +2,12 @@
 <ContentPage 
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-    x:Class="EyeSpyApp.Views.NewItemPage" 
+    xmlns:vm="clr-namespace:EyeSpyApp.ViewModels" 
+    x:Class="EyeSpyApp.Views.NewMemberPage" 
     Title="New Member">
+    <ContentPage.BindingContext>
+        <vm:NewMemberViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Save" Clicked="Save_Clicked" />
     </ContentPage.ToolbarItems>
