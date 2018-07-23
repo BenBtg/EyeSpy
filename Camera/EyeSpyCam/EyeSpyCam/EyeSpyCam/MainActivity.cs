@@ -58,9 +58,9 @@ namespace EyeSpyCam.Droid
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
                 CreateCameraSource();
-                LiveCamHelper.Init();
+                /*LiveCamHelper.Init();
                 LiveCamHelper.GreetingsCallback = (s) => { RunOnUiThread(() => GreetingsText = s); };
-                await LiveCamHelper.RegisterFaces();
+                await LiveCamHelper.RegisterFaces();*/
             }
             else { RequestCameraPermission(); }
 
@@ -219,7 +219,7 @@ namespace EyeSpyCam.Droid
     }
 
 
-    class GraphicFaceTracker : Tracker, CameraSource.IPictureCallback
+    class GraphicFaceTracker : Tracker
     {
         private GraphicOverlay mOverlay;
         private FaceGraphic mFaceGraphic;
@@ -236,8 +236,8 @@ namespace EyeSpyCam.Droid
         public override void OnNewItem(int id, Java.Lang.Object item)
         {
             mFaceGraphic.SetId(id);
-            if (mCameraSource != null && !isProcessing)
-                mCameraSource.TakePicture(null, this);
+            //if (mCameraSource != null && !isProcessing)
+                //mCameraSource.TakePicture(null, this);
         }
 
         public override void OnUpdate(Detector.Detections detections, Java.Lang.Object item)
@@ -260,30 +260,30 @@ namespace EyeSpyCam.Droid
 
         }
 
-        public void OnPictureTaken(byte[] data)
-        {
-            Task.Run(async () =>
-            {
-                try
-                {
-                    isProcessing = true;
+        //public void OnPictureTaken(byte[] data)
+        //{
+        //    Task.Run(async () =>
+        //    {
+        //        try
+        //        {
+        //            isProcessing = true;
 
-                    Console.WriteLine("face detected: ");
+        //            Console.WriteLine("face detected: ");
 
-                    var imageAnalyzer = new ImageAnalyzer(data);
-                    await LiveCamHelper.ProcessCameraCapture(imageAnalyzer);
+        //            var imageAnalyzer = new ImageAnalyzer(data);
+        //            await LiveCamHelper.ProcessCameraCapture(imageAnalyzer);
 
-                }
+        //        }
 
-                finally
-                {
-                    isProcessing = false;
+        //        finally
+        //        {
+        //            isProcessing = false;
 
 
-                }
+        //        }
 
-            });
-        }
+        //    });
+        //}
     }
 
 }
