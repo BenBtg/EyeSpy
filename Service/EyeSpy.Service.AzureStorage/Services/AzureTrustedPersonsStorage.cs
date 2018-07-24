@@ -4,6 +4,8 @@ using Microsoft.WindowsAzure.Storage;
 using System;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Auth;
+using System.Collections.Generic;
+using EyeSpy.Service.AzureStorage.Models;
 
 namespace EyeSpy.Service.AzureStorage.Services
 {
@@ -13,6 +15,8 @@ namespace EyeSpy.Service.AzureStorage.Services
         private readonly string storageAccessKey;
         private const string KnownPersonsContainerName = "kpcontainer";
         private const string KnownPersonsTableName = "kptable";
+        private const string DetectionsContainerName = "dtcontainer";
+        private const string DetectionsTableName = "dttable";
         private bool initialized;
         private CloudStorageAccount cloudStorageAccount;
         private AzureBlobStorageService blobStorageService;
@@ -28,9 +32,35 @@ namespace EyeSpy.Service.AzureStorage.Services
             this.InitAsync().Wait();
         }
 
-        public Task<bool> CreateTrustedPersonAsync(TrustedPerson trustedPerson, byte[] trustedPersonImageData)
+        public async Task<TrustedPerson> CreateTrustedPersonAsync(BaseTrustedPerson trustedPerson, byte[] trustedPersonImageData)
         {
-            return Task.FromResult<bool>(true);
+            // Upload person image to known persons blob container
+            var knownPersonImageUrl = await this.blobStorageService.UploadBytesToContainerAsync(trustedPerson.Id, trustedPersonImageData, KnownPersonsContainerName);
+
+            // Enter record in known persons table
+            var trustedPersonResult = new TrustedPerson
+            {
+                Id = trustedPerson.Id,
+                Name = trustedPerson.Name,
+                ProfileUrl = knownPersonImageUrl
+            };
+
+            var success = await this.tableStorageService.CreateEntityInTableAsync<TrustedPersonEntity>(TrustedPersonEntity.FromTrustedPerson(trustedPersonResult), KnownPersonsTableName);
+
+            //if (!success)
+                // TODO: Roll back changes
+
+            return trustedPersonResult;
+        }
+
+        public Task<TrustedPerson> GetTrustedPersonByIdAsync(string id)
+        {
+            return Task.FromResult<TrustedPerson>(null);
+        }
+
+        public Task<IList<TrustedPerson>> GetTrustedPersonsAsync()
+        {
+            return Task.FromResult<IList<TrustedPerson>>(null);
         }
 
         private async Task InitAsync()
@@ -46,16 +76,17 @@ namespace EyeSpy.Service.AzureStorage.Services
             this.tableStorageService = new AzureTableStorageService(this.cloudStorageAccount);
 
             // Create the 'known persons' blob container if it does not exist       
-            var success = await this.blobStorageService.CreateContainerIfNotExistsAsync(KnownPersonsContainerName);
+            await this.blobStorageService.CreateContainerIfNotExistsAsync(KnownPersonsContainerName);
 
-            if (!success)
-                throw new Exception($"Unable to initialize the {KnownPersonsContainerName} Azure Blob Container");
+            // Create the 'detections' blob container if it does not exist    
+            await this.blobStorageService.CreateContainerIfNotExistsAsync(DetectionsContainerName);
 
             // Create the 'known persons' table if it does not exist
-            success = await this.tableStorageService.CreateContainerIfNotExistsAsync(KnownPersonsTableName);
+            await this.tableStorageService.CreateTableIfNotExistsAsync(KnownPersonsTableName);
 
-            if (!success)
-                throw new Exception($"Unable to initialize the {KnownPersonsTableName} Storage Table");
+            // Create the 'detections' table if it does not exist
+            await this.tableStorageService.CreateTableIfNotExistsAsync(DetectionsTableName);
+
             this.initialized = true;
         }        
     }

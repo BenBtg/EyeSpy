@@ -31,9 +31,11 @@ namespace EyeSpy.Service.Controllers
             var trustedPerson = await this.trustedPersonsService.DetectIfPersonIsTrustedAsync(this.Request.Body.ToBytes());
 
             //if (!trustedPerson)
-            //    // TODO: Store in blob storage and raise alert!
+            //    // TODO: Store in blob/table storage and raise alert!            
 
             return new OkObjectResult(trustedPerson); ;
         }
+
+        // Need a Get method here to retrieve detection from table by id i.e. deep link provided in notification
     }
 }

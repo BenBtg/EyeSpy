@@ -16,10 +16,28 @@ namespace EyeSpy.Service.AzureStorage.Services
             this.tableClient = this.cloudStorageAccount.CreateCloudTableClient();
         }
 
-        public async Task<bool> CreateContainerIfNotExistsAsync(string tableName)
+        public async Task<bool> CreateTableIfNotExistsAsync(string tableName)
         {
             CloudTable table = this.tableClient.GetTableReference(tableName);
             return await table.CreateIfNotExistsAsync();
+        }
+
+        public async Task<bool> CreateEntityInTableAsync<T>(T entity, string tableName) where T : TableEntity
+        {
+            CloudTable table = this.tableClient.GetTableReference(tableName);
+            TableOperation insertOperation = TableOperation.InsertOrReplace(entity);
+
+            try
+            {
+                await table.ExecuteAsync(insertOperation);
+                return true;
+            }
+            catch
+            {
+                // TODO: Log exception
+            }
+
+            return false;
         }
     }
 }
