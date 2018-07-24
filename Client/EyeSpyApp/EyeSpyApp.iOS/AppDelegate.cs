@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Foundation;
 using UIKit;
+using ImageCircle.Forms.Plugin.iOS;
 
 namespace EyeSpyApp.iOS
 {
@@ -14,6 +15,7 @@ namespace EyeSpyApp.iOS
             ApplyStyle();
 
             global::Xamarin.Forms.Forms.Init();
+            ImageCircleRenderer.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

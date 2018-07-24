@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     xmlns:vm="clr-namespace:EyeSpyApp.ViewModels" 
+    xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
     x:Class="EyeSpyApp.Views.HouseholdPage" 
     Title="{Binding Title}" >
      <ContentPage.BindingContext>
@@ -26,7 +27,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid HeightRequest="120">
+                            <Grid HeightRequest="120" Padding="10">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
@@ -36,7 +37,8 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Image
+                                <controls:CircleImage
+                                    Aspect="AspectFill"
                                     Grid.RowSpan="2"
                                     WidthRequest="120"
                                     HeightRequest="120"
