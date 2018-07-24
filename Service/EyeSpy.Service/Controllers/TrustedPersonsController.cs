@@ -38,7 +38,7 @@ namespace EyeSpy.Service.Controllers
                 return new BadRequestObjectResult($"Binary body payload must not be empty");
 
             // Create the trusted person in Face API (to get the ID)
-            var baseTrustedPerson = await trustedPersonsService.CreateTrustedPersonAsync("Ben Buttigieg", trustedPersonImageData);
+            var baseTrustedPerson = await trustedPersonsService.CreateTrustedPersonAsync(name, trustedPersonImageData);
 
             // Add the trusted person image to blob storage (using the ID from the Face Api) trusted person
             var trustedPerson = await this.trustedPersonsStorage.CreateTrustedPersonAsync(baseTrustedPerson, trustedPersonImageData);
@@ -58,7 +58,7 @@ namespace EyeSpy.Service.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromQuery]string id)
+        public async Task<IActionResult> Get(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return new BadRequestObjectResult($"Parameter {nameof(id)} is missing");

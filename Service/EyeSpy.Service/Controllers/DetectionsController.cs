@@ -57,7 +57,7 @@ namespace EyeSpy.Service.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromQuery]string id)
+        public async Task<IActionResult> Get(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return new BadRequestObjectResult($"Parameter {nameof(id)} is missing");

@@ -15,7 +15,18 @@ namespace EyeSpy.Service.FaceApi.Services
             if (faceDetectImageBytes == null)
                 throw new Exception($"Parameter {nameof(faceDetectImageBytes)} cannot be null");
 
-            return await PostAsync<FaceDetectResponse>(DetectEndpoint, faceDetectImageBytes,  (request) => this.ConfigureRequestWithSubscriptionHeader(request));
+            FaceDetectResponse result = null;
+
+            try
+            {
+                result = await PostAsync<FaceDetectResponse>(DetectEndpoint, faceDetectImageBytes, (request) => this.ConfigureRequestWithSubscriptionHeader(request));
+            }
+            catch
+            {
+                // TODO: Log error - this will fail if the model has not been trained
+            }            
+
+            return result;
         }
     }
 }

@@ -11,7 +11,18 @@ namespace EyeSpy.Service.FaceApi.Services
 
         public async Task<FaceIdentifyResponse> IdentifyFaceAsync(FaceIdentifyRequest faceIdentifyRequest)
         {
-            return await PostAsync<FaceIdentifyResponse, FaceIdentifyRequest>(IdentityEndpoint, faceIdentifyRequest, (request) => this.ConfigureRequestWithSubscriptionHeader(request));
+            FaceIdentifyResponse result = null;
+
+            try
+            {
+                result =  await PostAsync<FaceIdentifyResponse, FaceIdentifyRequest>(IdentityEndpoint, faceIdentifyRequest, (request) => this.ConfigureRequestWithSubscriptionHeader(request));
+            }
+            catch
+            {
+                // TODO: Log error - note that this will fail if the model has not yet been trained
+            }
+
+            return result;            
         }
     }
 }

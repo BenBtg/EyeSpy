@@ -89,11 +89,11 @@ namespace EyeSpy.Service.FaceApi.Services
             if (string.IsNullOrWhiteSpace(personGroupId))
                 throw new Exception($"Unable to initialize the {KnownPersonsGroupName} Face Api Person Group");
 
-            // Train the model
-            var modelTrained = await this.personGroupsService.TrainModelAndWaitCompletionAsync(personGroupId);
+            //// Train the model - this will fail if there are no persons or faces to train it with
+            //var modelTrained = await this.personGroupsService.TrainModelAndWaitCompletionAsync(personGroupId);
 
-            if (!modelTrained)
-                throw new Exception($"Unable to train the {KnownPersonsGroupName} Face Api Model");
+            //if (!modelTrained)
+            //    throw new Exception($"Unable to train the {KnownPersonsGroupName} Face Api Model");
 
             this.initialized = true;
         }
