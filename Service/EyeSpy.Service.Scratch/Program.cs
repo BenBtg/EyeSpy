@@ -2,6 +2,7 @@
 using EyeSpy.Service.Common;
 using EyeSpy.Service.Common.Abstractions;
 using EyeSpy.Service.Common.Models;
+using EyeSpy.Service.FaceApi.Services;
 using System;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,26 @@ namespace EyeSpy.Service.Scratch
         {
             Console.WriteLine("Hello World!");
             //TestStorageAsync().Wait();
-            TestRetrievalAsync().Wait();
+            //TestRetrievalAsync().Wait();
+            TestAddPersonService().Wait();
+        }
+
+        private static async Task TestAddPersonService()
+        {
+            ITrustedPersonsService trustedPersonsService = new FaceApiTrustedPersonsService("<face_api_endpoint>", "<face_subscription_key>");
+
+            byte[] trustedPersonImage;
+
+            using (var filestream = File.Open(@"C:\Users\mikep\Desktop\FACE\nonmatchtest.png", FileMode.Open))
+                trustedPersonImage = filestream.ToBytes();
+
+            var trustedPerson = await trustedPersonsService.CreateTrustedPersonAsync("Ben Buttigieg", trustedPersonImage);
+            var trustedPersons = await trustedPersonsService.GetTrustedPersonsAsync();
+            var lastTrustedPerson = await trustedPersonsService.GetTrustedPersonByIdAsync(trustedPersons.LastOrDefault()?.Id); 
+
+            
+
+            var x = 0;
         }
 
         private static async Task TestRetrievalAsync()

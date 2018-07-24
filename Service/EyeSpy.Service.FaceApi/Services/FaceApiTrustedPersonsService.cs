@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EyeSpy.Service.Common.Abstractions;
+using EyeSpy.Service.Common.Models;
 using EyeSpy.Service.FaceApi.Models;
 
 namespace EyeSpy.Service.FaceApi.Services
@@ -49,6 +50,26 @@ namespace EyeSpy.Service.FaceApi.Services
             var faceIdentifyResponse = (await this.faceIdentifyService.IdentifyFaceAsync(faceIdentifyRequest))?.FirstOrDefault();
 
             return faceIdentifyResponse?.Candidates?.Count > 0;
+        }
+
+        public async Task<BaseTrustedPerson> CreateTrustedPersonAsync(string trustedPersonName, byte[] persistedFaceImageData)
+        {
+            var personGroupPerson = await this.personGroupsService.CreatePersonGroupPerson(new PersonGroupPerson { Name = trustedPersonName }, personGroupId);
+            var persistedFaceResponse = await this.personGroupsService.CreatePersonGroupPersonPersistedFace(persistedFaceImageData, personGroupPerson.PersonId, personGroupId);
+
+            return new BaseTrustedPerson { Id = personGroupPerson.PersonId, Name = trustedPersonName };
+        }
+
+        public async Task<List<BaseTrustedPerson>> GetTrustedPersonsAsync()
+        {
+            var personGroupPersons = await this.personGroupsService.GetPersonGroupPersons(personGroupId);
+            return personGroupPersons.Select(i => new BaseTrustedPerson { Id = i.PersonId, Name = i.Name }).ToList();
+        }
+
+        public async Task<BaseTrustedPerson> GetTrustedPersonByIdAsync(string id)
+        {
+            var personGroupPerson = await this.personGroupsService.GetPersonGroupPersonById(id, personGroupId);
+            return new BaseTrustedPerson { Id = personGroupPerson.PersonId, Name = personGroupPerson.Name };
         }
 
         private async Task InitAsync()

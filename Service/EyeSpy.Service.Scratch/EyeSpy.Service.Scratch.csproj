@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ExeSpy.Service.Common\EyeSpy.Service.Common.csproj" />
     <ProjectReference Include="..\EyeSpy.Service.AzureStorage\EyeSpy.Service.AzureStorage.csproj" />
+    <ProjectReference Include="..\EyeSpy.Service.FaceApi\EyeSpy.Service.FaceApi.csproj" />
   </ItemGroup>
 
 </Project>

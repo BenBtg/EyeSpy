@@ -9,6 +9,9 @@ namespace EyeSpy.Service.FaceApi.Services
     public class PersonGroupsService : BaseFaceService
     {
         private const string PersonGroupsEndpoint = "persongroups";
+        private const string PersonGroupsPersonsTokenizedEndpoint = "persongroups/{0}/persons";
+        private const string PersonGroupsPersonsByIdTokenizedEndpoint = "persongroups/{0}/persons/{1}";
+        private const string PersistedFacesTokenizedEndpoint = "persongroups/{0}/persons/{1}/persistedFaces";
         private const string PersonGroupsTrainModelTokenizedEndpoint = "persongroups/{0}/train";
         private const string PersonGroupsTrainModelStatusTokenizedEndpoint = "persongroups/{0}/training";
 
@@ -43,6 +46,74 @@ namespace EyeSpy.Service.FaceApi.Services
                 personGroupResult = await this.CreatePersonGroup(new PersonGroup { Name = personGroupName });
 
             return personGroupResult;
+        }
+
+        public async Task<PersonGroupPersonResult> GetPersonGroupPersonById(string id, string personGroupId)
+        {
+            PersonGroupPersonResult personGroupPersonResult = null;
+            var personGroupPersonsByIdEndpoint = string.Format(PersonGroupsPersonsByIdTokenizedEndpoint, personGroupId, id);
+
+            try
+            {
+                personGroupPersonResult = await GetAsync<PersonGroupPersonResult>(personGroupPersonsByIdEndpoint, (request) => this.ConfigureRequestWithSubscriptionHeader(request));
+            }
+            catch
+            {
+                // TODO: Log exception
+            }
+
+            return personGroupPersonResult;
+        }
+
+        public async Task<List<PersonGroupPersonResult>> GetPersonGroupPersons(string personGroupId)
+        {
+            List<PersonGroupPersonResult> personGroupPersonResults = null;
+            var personGroupPersonsEndpoint = string.Format(PersonGroupsPersonsTokenizedEndpoint, personGroupId);
+
+            try
+            {
+                personGroupPersonResults = await GetAsync<List<PersonGroupPersonResult>>(personGroupPersonsEndpoint, (request) => this.ConfigureRequestWithSubscriptionHeader(request));
+            }
+            catch
+            {
+                // TODO: Log exception
+            }
+
+            return personGroupPersonResults;
+        }
+
+        public async Task<BasePersonGroupPersonResult> CreatePersonGroupPerson(PersonGroupPerson personGroupPerson, string personGroupId)
+        {
+            BasePersonGroupPersonResult personGroupPersonResult = null;
+            var personGroupPersonsEndpoint = string.Format(PersonGroupsPersonsTokenizedEndpoint, personGroupId);
+
+            try
+            {
+                personGroupPersonResult = await PostAsync<BasePersonGroupPersonResult, PersonGroupPerson>(personGroupPersonsEndpoint, personGroupPerson, (request) => this.ConfigureRequestWithSubscriptionHeader(request));
+            }
+            catch
+            {
+                // TODO: Log exception
+            }
+
+            return personGroupPersonResult;
+        }      
+        
+        public async Task<PersistedFaceResult> CreatePersonGroupPersonPersistedFace(byte[] persistedFaceImageData, string personGroupPersonId, string personGroupId)
+        {
+            PersistedFaceResult persistedFaceResult = null;
+            var personGroupPersonsPersistedFacesEndpoint = string.Format(PersistedFacesTokenizedEndpoint, personGroupId, personGroupPersonId);
+
+            try
+            {
+                persistedFaceResult = await PostAsync<PersistedFaceResult>(personGroupPersonsPersistedFacesEndpoint, persistedFaceImageData, (request) => this.ConfigureRequestWithSubscriptionHeader(request));
+            }
+            catch
+            {
+                // TODO: Log exception
+            }
+
+            return persistedFaceResult;
         }
 
         // TODO: Coalesce these operations!
