@@ -16,8 +16,14 @@ namespace EyeSpyApp.ViewModels
         public bool IsBusy
         {
             get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
+            set
+            {
+                if (SetProperty(ref isBusy, value))
+                    OnPropertyChanged(nameof(IsNotBusy));
+            }
         }
+
+        public bool IsNotBusy => !IsBusy;
 
         string title = string.Empty;
         public string Title

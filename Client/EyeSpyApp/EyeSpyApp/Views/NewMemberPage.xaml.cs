@@ -13,13 +13,8 @@ namespace EyeSpyApp.Views
         public NewMemberPage()
         {
             InitializeComponent();
-        }
-
-        private async void Save_Clicked(object sender, EventArgs e)
-        {
             var newMemberContext = (NewMemberViewModel)BindingContext;
-            MessagingCenter.Send(this, "AddMember", newMemberContext.Member);
-            await Navigation.PopModalAsync();
+            newMemberContext.OnSaveMemberCommandCompleted = async () => await Navigation.PopModalAsync();
         }
     }
 }

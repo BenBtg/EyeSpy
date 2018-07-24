@@ -8,15 +8,33 @@
     <ContentPage.BindingContext>
         <vm:NewMemberViewModel />
     </ContentPage.BindingContext>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save" Clicked="Save_Clicked" />
-    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="15">
-            <Label Text="Text" FontSize="Medium" />
-            <Entry Text="{Binding Item.Text}" FontSize="Small" />
-            <Label Text="Description" FontSize="Medium" />
-            <Editor Text="{Binding Item.Description}" FontSize="Small" Margin="0" />
-        </StackLayout>
+        <Grid 
+            VerticalOptions="FillAndExpand" 
+            HorizontalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+             <StackLayout 
+                Grid.Row="0" 
+                Spacing="20" 
+                Padding="0"
+                VerticalOptions="FillAndExpand">
+                <Label Text="Text" FontSize="Medium" />
+                <Entry Text="{Binding Member.Text}" FontSize="Small" />
+                <Label Text="Description" FontSize="Medium" />
+                <Editor Text="{Binding Member.Description}" FontSize="Small" Margin="0" />
+            </StackLayout>
+            <Button 
+                BackgroundColor="{StaticResource NavigationPrimary}" 
+                HeightRequest="100"
+                VerticalOptions="End"
+                TextColor="White"
+                Text="Save"
+                IsEnabled="{Binding IsNotBusy}}"
+                Command="{Binding SaveMemberCommand}"/>
+        </Grid>
+       
     </ContentPage.Content>
 </ContentPage>
