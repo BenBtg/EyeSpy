@@ -18,19 +18,19 @@ namespace EyeSpy.Service.AzureStorage.Models
 
         public string Name { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string ImageReference { get; set; }
 
         public static DetectionEntity FromDetection(Detection detection)
         {
             DateTimeOffset timestamp;
             DateTimeOffset.TryParse(detection.DetectionTimestamp, out timestamp);
 
-            return new DetectionEntity(detection.Id) { ImageUrl = detection.DetectionImageUrl, Timestamp = timestamp };
+            return new DetectionEntity(detection.Id) { ImageReference = detection.ImageReference, Timestamp = timestamp };
         }
 
         public Detection ToDetection()
         {
-            return new Detection { Id = this.RowKey, DetectionImageUrl = this.ImageUrl, DetectionTimestamp = this.Timestamp.ToString() };
+            return new Detection { Id = this.RowKey, ImageReference = this.ImageReference, DetectionTimestamp = this.Timestamp.ToString() };
         }
     }
 }

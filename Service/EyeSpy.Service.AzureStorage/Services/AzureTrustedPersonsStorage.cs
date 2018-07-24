@@ -44,7 +44,7 @@ namespace EyeSpy.Service.AzureStorage.Services
             {
                 Id = trustedPerson.Id,
                 Name = trustedPerson.Name,
-                ProfileUrl = knownPersonImageUrl
+                ImageReference = knownPersonImageUrl
             };
 
             var success = await this.tableStorageService.CreateEntityInTableAsync<TrustedPersonEntity>(TrustedPersonEntity.FromTrustedPerson(trustedPersonResult), KnownPersonsTableName);
@@ -73,7 +73,7 @@ namespace EyeSpy.Service.AzureStorage.Services
             var detectionImageUrl = await this.blobStorageService.UploadBytesToContainerAsync(detection.Id, detectionImageData, DetectionsContainerName);
 
             // Enter record in known persons table
-            var detectionResult = new Detection { Id = detection.Id, DetectionImageUrl = detectionImageUrl, DetectionTimestamp = DateTime.UtcNow.ToString() };
+            var detectionResult = new Detection { Id = detection.Id, ImageReference = detectionImageUrl, DetectionTimestamp = DateTime.UtcNow.ToString() };
 
             var success = await this.tableStorageService.CreateEntityInTableAsync<DetectionEntity>(DetectionEntity.FromDetection(detectionResult), DetectionsTableName);
 
@@ -90,6 +90,11 @@ namespace EyeSpy.Service.AzureStorage.Services
         {
             var detectionEntities = await this.tableStorageService.RetrieveAllEntitiesAsync<DetectionEntity>(DetectionsTableName);
             return detectionEntities?.Select(i => i.ToDetection()).ToList();
+        }
+
+        public async Task<byte[]> GetMediaContentAsync(string contentPath, string contentName)
+        {
+            return await this.blobStorageService.RetrieveBytesFromContainerAsync(contentName, contentPath);
         }
 
         private async Task InitAsync()

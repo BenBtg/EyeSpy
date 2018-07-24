@@ -12,5 +12,6 @@ namespace EyeSpy.Service.Common.Abstractions
         Task<Detection> CreateDetectionAsync(BaseDetection detection, byte[] detectionImageData);
         Task<Detection> GetDetectionByIdAsync(string id);
         Task<IList<Detection>> GetDetectionsAsync();
+        Task<byte[]> GetMediaContentAsync(string contentPath, string contentName);
     }
 }
