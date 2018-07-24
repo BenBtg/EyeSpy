@@ -117,24 +117,13 @@ namespace EyeSpy.Service.FaceApi.Services
         }
 
         // TODO: Coalesce these operations!
-        public async Task<bool> TrainModelAsync(string personGroupId)
+        public async Task<bool> TrainModelAndWaitCompletionAsync(string personGroupId)
         {
-            bool success = false;
-            var trainModelEndpoint = string.Format(PersonGroupsTrainModelTokenizedEndpoint, personGroupId);
-            var trainModelStatusEndpoint = string.Format(PersonGroupsTrainModelStatusTokenizedEndpoint, personGroupId);
-
-            try
-            {
-                await this.PostAsync(trainModelEndpoint, (request) => this.ConfigureRequestWithSubscriptionHeader(request));
-                success = true;
-            }
-            catch
-            {
-                // TODO: Log exception here!
-            }
+            bool success = await this.TrainModelAsync(personGroupId);
 
             if (success)
             {
+                var trainModelStatusEndpoint = string.Format(PersonGroupsTrainModelStatusTokenizedEndpoint, personGroupId);
                 var timeoutTicks = DateTime.UtcNow.AddMilliseconds(10000).Ticks;
                 ModelTrainingResult modelTrainingResult = null;
 
@@ -149,6 +138,23 @@ namespace EyeSpy.Service.FaceApi.Services
             }
 
             return success;
+        }
+
+        public async Task<bool> TrainModelAsync(string personGroupId)
+        {
+            var trainModelEndpoint = string.Format(PersonGroupsTrainModelTokenizedEndpoint, personGroupId);
+
+            try
+            {
+                await this.PostAsync(trainModelEndpoint, (request) => this.ConfigureRequestWithSubscriptionHeader(request));
+            }
+            catch
+            {
+                // TODO: Log exception here!
+                return false;
+            }
+
+            return true;
         }
     }
 }

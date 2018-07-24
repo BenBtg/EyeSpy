@@ -56,6 +56,7 @@ namespace EyeSpy.Service.FaceApi.Services
         {
             var personGroupPerson = await this.personGroupsService.CreatePersonGroupPerson(new PersonGroupPerson { Name = trustedPersonName }, personGroupId);
             var persistedFaceResponse = await this.personGroupsService.CreatePersonGroupPersonPersistedFace(persistedFaceImageData, personGroupPerson.PersonId, personGroupId);
+            await this.personGroupsService.TrainModelAsync(personGroupId);
 
             return new BaseTrustedPerson { Id = personGroupPerson.PersonId, Name = trustedPersonName };
         }
@@ -89,7 +90,7 @@ namespace EyeSpy.Service.FaceApi.Services
                 throw new Exception($"Unable to initialize the {KnownPersonsGroupName} Face Api Person Group");
 
             // Train the model
-            var modelTrained = await this.personGroupsService.TrainModelAsync(personGroupId);
+            var modelTrained = await this.personGroupsService.TrainModelAndWaitCompletionAsync(personGroupId);
 
             if (!modelTrained)
                 throw new Exception($"Unable to train the {KnownPersonsGroupName} Face Api Model");
