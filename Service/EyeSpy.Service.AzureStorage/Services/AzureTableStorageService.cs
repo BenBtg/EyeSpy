@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -38,6 +40,32 @@ namespace EyeSpy.Service.AzureStorage.Services
             }
 
             return false;
+        }
+
+        public async Task<List<T>> RetrieveAllEntitiesAsync<T>(string tableName) where T : TableEntity, new()
+        {
+            CloudTable table = this.tableClient.GetTableReference(tableName);
+            TableContinuationToken token = null;
+            var entities = new List<T>();
+
+            do
+            {
+                TableQuery<T> query = new TableQuery<T>();
+                var queryResult = await table.ExecuteQuerySegmentedAsync(query, token);
+                entities.AddRange(queryResult.Results);
+                token = queryResult.ContinuationToken;
+            } while (token != null);
+
+            return entities as List<T>;
+        }
+
+        public async Task<T> RetrieveEntityByIdAsync<T>(string id, string tableName) where T : TableEntity, new()
+        {
+            CloudTable table = this.tableClient.GetTableReference(tableName);
+            TableQuery<T> query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("RowKey", "eq", id)).Take(1);
+            var queryResult = await table.ExecuteQuerySegmentedAsync(query, null);
+
+            return queryResult.Results.FirstOrDefault();
         }
     }
 }

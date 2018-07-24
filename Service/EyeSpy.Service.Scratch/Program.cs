@@ -4,6 +4,7 @@ using EyeSpy.Service.Common.Abstractions;
 using EyeSpy.Service.Common.Models;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EyeSpy.Service.Scratch
@@ -13,8 +14,18 @@ namespace EyeSpy.Service.Scratch
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            TestStorageAsync().Wait();
-            var test = 0;
+            //TestStorageAsync().Wait();
+            TestRetrievalAsync().Wait();
+        }
+
+        private static async Task TestRetrievalAsync()
+        {
+            ITrustedPersonsStorage trustedPersonsStorage = new AzureTrustedPersonsStorage("<account_name>", "<account_key>");
+            var trustedPersons = await trustedPersonsStorage.GetTrustedPersonsAsync();
+            var trustedPerson = await trustedPersonsStorage.GetTrustedPersonByIdAsync(trustedPersons.FirstOrDefault().Id);
+            var detections = await trustedPersonsStorage.GetDetectionsAsync();
+            var detection = await trustedPersonsStorage.GetDetectionByIdAsync(detections.FirstOrDefault().Id);
+            var x = 0;
         }
 
         private static async Task TestStorageAsync()
@@ -23,12 +34,12 @@ namespace EyeSpy.Service.Scratch
 
             byte[] trustedPersonImage;
 
-            using (var filestream = File.Open(@"C:\Users\mikep\Desktop\FACE\johnparker.jpg", FileMode.Open))
+            using (var filestream = File.Open(@"C:\Users\mikep\Desktop\FACE\joebloggs.jpg", FileMode.Open))
                 trustedPersonImage = filestream.ToBytes();
 
-            var trustedPerson = await trustedPersonsStorage.CreateTrustedPersonAsync(new BaseTrustedPerson { Id = Guid.NewGuid().ToString().ToLower(), Name = "John Parker" }, trustedPersonImage);
+            var trustedPerson = await trustedPersonsStorage.CreateTrustedPersonAsync(new BaseTrustedPerson { Id = Guid.NewGuid().ToString().ToLower(), Name = "Joe Bloggs" }, trustedPersonImage);
 
-            var y = 0;
+            var detection = await trustedPersonsStorage.CreateDetectionAsync(new BaseDetection { Id = Guid.NewGuid().ToString().ToLower() }, trustedPersonImage);
         }
     }
 }

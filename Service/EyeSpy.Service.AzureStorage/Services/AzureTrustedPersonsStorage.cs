@@ -2,10 +2,12 @@
 using EyeSpy.Service.Common.Abstractions;
 using Microsoft.WindowsAzure.Storage;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Auth;
 using System.Collections.Generic;
 using EyeSpy.Service.AzureStorage.Models;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace EyeSpy.Service.AzureStorage.Services
 {
@@ -53,14 +55,41 @@ namespace EyeSpy.Service.AzureStorage.Services
             return trustedPersonResult;
         }
 
-        public Task<TrustedPerson> GetTrustedPersonByIdAsync(string id)
+        public async Task<TrustedPerson> GetTrustedPersonByIdAsync(string id)
         {
-            return Task.FromResult<TrustedPerson>(null);
+            var trustedPersonEntity = await this.tableStorageService.RetrieveEntityByIdAsync<TrustedPersonEntity>(id, KnownPersonsTableName);
+            return trustedPersonEntity?.ToTrustedPerson();
         }
 
-        public Task<IList<TrustedPerson>> GetTrustedPersonsAsync()
+        public async Task<IList<TrustedPerson>> GetTrustedPersonsAsync()
         {
-            return Task.FromResult<IList<TrustedPerson>>(null);
+            var trustedPersonEntities = await this.tableStorageService.RetrieveAllEntitiesAsync<TrustedPersonEntity>(KnownPersonsTableName);
+            return trustedPersonEntities?.Select(i => i.ToTrustedPerson()).ToList();
+        }
+
+        public async Task<Detection> CreateDetectionAsync(BaseDetection detection, byte[] detectionImageData)
+        {
+            // Upload person image to known persons blob container
+            var detectionImageUrl = await this.blobStorageService.UploadBytesToContainerAsync(detection.Id, detectionImageData, DetectionsContainerName);
+
+            // Enter record in known persons table
+            var detectionResult = new Detection { Id = detection.Id, DetectionImageUrl = detectionImageUrl, DetectionTimestamp = DateTime.UtcNow.ToString() };
+
+            var success = await this.tableStorageService.CreateEntityInTableAsync<DetectionEntity>(DetectionEntity.FromDetection(detectionResult), DetectionsTableName);
+
+            return detectionResult;
+        }
+
+        public async Task<Detection> GetDetectionByIdAsync(string id)
+        {
+            var detectionEntity = await this.tableStorageService.RetrieveEntityByIdAsync<DetectionEntity>(id, DetectionsTableName);
+            return detectionEntity?.ToDetection();
+        }
+
+        public async Task<IList<Detection>> GetDetectionsAsync()
+        {
+            var detectionEntities = await this.tableStorageService.RetrieveAllEntitiesAsync<DetectionEntity>(DetectionsTableName);
+            return detectionEntities?.Select(i => i.ToDetection()).ToList();
         }
 
         private async Task InitAsync()

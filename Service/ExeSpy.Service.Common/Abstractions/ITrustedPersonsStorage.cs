@@ -9,5 +9,8 @@ namespace EyeSpy.Service.Common.Abstractions
         Task<TrustedPerson> CreateTrustedPersonAsync(BaseTrustedPerson trustedPerson, byte[] trustedPersonImageData);
         Task<TrustedPerson> GetTrustedPersonByIdAsync(string id);
         Task<IList<TrustedPerson>> GetTrustedPersonsAsync();
+        Task<Detection> CreateDetectionAsync(BaseDetection detection, byte[] detectionImageData);
+        Task<Detection> GetDetectionByIdAsync(string id);
+        Task<IList<Detection>> GetDetectionsAsync();
     }
 }
