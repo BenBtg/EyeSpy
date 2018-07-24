@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using EyeSpy.Shared;
 using EyeSpyApp.Models;
 using EyeSpyApp.Services;
 using Xamarin.Forms;
@@ -10,7 +11,7 @@ namespace EyeSpyApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<HouseholdMember> DataStore => DependencyService.Get<IDataStore<HouseholdMember>>() ?? new MockDataStore();
+        public Lazy<IEyeSpyService> EyeSpyService { get; } = new Lazy<IEyeSpyService>(() => DependencyService.Get<IEyeSpyService>());
 
         bool isBusy = false;
         public bool IsBusy

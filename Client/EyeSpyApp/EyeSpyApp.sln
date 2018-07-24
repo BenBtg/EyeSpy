@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeSpyApp.iOS", "EyeSpyApp.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeSpyApp", "EyeSpyApp\EyeSpyApp.csproj", "{B7393973-AD05-4CC6-BE56-50F749490BEE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeSpy.Shared", "..\..\Shared\EyeSpy.Shared\EyeSpy.Shared.csproj", "{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,5 +55,17 @@ Global
 		{B7393973-AD05-4CC6-BE56-50F749490BEE}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{B7393973-AD05-4CC6-BE56-50F749490BEE}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{B7393973-AD05-4CC6-BE56-50F749490BEE}.Release|iPhone.Build.0 = Release|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}.Release|iPhone.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using EyeSpy.Shared;
 using EyeSpyApp.Models;
 using EyeSpyApp.Views;
 using Xamarin.Forms;
@@ -19,11 +21,10 @@ namespace EyeSpyApp.ViewModels
             Members = new ObservableCollection<HouseholdMember>();
             LoadMembersCommand = new Command(async () => await ExecuteLoadMembersCommand());
 
-            MessagingCenter.Subscribe<NewMemberViewModel, HouseholdMember>(this, "AddMember", async (obj, item) =>
+            MessagingCenter.Subscribe<NewMemberViewModel, HouseholdMember>(this, "AddMemberCompleted", (obj, item) =>
             {
-                var _item = item as HouseholdMember;
+                var _item = (HouseholdMember)item;
                 Members.Add(_item);
-                await DataStore.AddItemAsync(_item);
             });
         }
 
@@ -36,12 +37,13 @@ namespace EyeSpyApp.ViewModels
 
             try
             {
+                var trustedPersons = await EyeSpyService.Value.GetTrustedPersons();
+
                 Members.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
-                {
-                    Members.Add(item);
-                }
+                trustedPersons?
+                    .Select(tp => new HouseholdMember { Id = tp.Id, Text = tp.Name, ImageUrl = tp.ProfileUrl })
+                    .ToList()
+                    .ForEach(Members.Add);
             }
             catch (Exception ex)
             {

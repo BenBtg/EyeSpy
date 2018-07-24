@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using EyeSpy.Shared;
 using EyeSpyApp.Models;
 
 namespace EyeSpyApp.ViewModels
@@ -9,6 +11,8 @@ namespace EyeSpyApp.ViewModels
     public class NewMemberViewModel : BaseViewModel
     {
         public HouseholdMember Member { get; }
+
+        public Stream MemberImageStream { get; set; }
 
         public Action OnSaveMemberCommandCompleted { get; set; }
 
@@ -31,11 +35,15 @@ namespace EyeSpyApp.ViewModels
             {
                 IsBusy = true;
 
-                //TODO: submit to the backend
-                await Task.Delay(2000);
+                var newMember = new PersonData()
+                {
+                    Name = Member.Text,
+                    ImageStream = MemberImageStream,
+                };
 
-                //notify other view models to udpate state
-                MessagingCenter.Send(this, "AddMember", Member);
+                await EyeSpyService.Value.AddTrustedPerson(newMember);
+
+                MessagingCenter.Send(this, "AddMemberCompleted", Member);
                 OnSaveMemberCommandCompleted?.Invoke();
             }
             catch(Exception ex)

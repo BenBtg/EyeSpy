@@ -8,6 +8,6 @@ namespace EyeSpyApp.Models
         public string Id { get; set; }
         public string Text { get; set; }
         public string Description { get; set; }
-        public Stream Image { get; set; }
+        public string ImageUrl { get; set; }
     }
 }
