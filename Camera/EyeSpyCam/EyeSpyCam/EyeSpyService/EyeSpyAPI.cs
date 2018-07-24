@@ -28,7 +28,7 @@ namespace EyeSpyService
         public async Task IdentifyFacesAsync(byte[] data)
         {
             var content = new ByteArrayContent(data);
-            var response = await _eyeSpyServiceClient.PostAsync("detections", content);
+            var response = await _eyeSpyServiceClient.PostAsync("api/detections", content);
             Console.WriteLine(response.StatusCode.ToString());
             Console.WriteLine(response.Content);
 
