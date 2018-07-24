@@ -44,3 +44,4 @@ Resource.designer.cs
 
 # MFractor
 *.mfractor/
+devsettings.json

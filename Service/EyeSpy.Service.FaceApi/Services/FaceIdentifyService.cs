@@ -1,0 +1,17 @@
+﻿using System.Threading.Tasks;
+using EyeSpy.Service.FaceApi.Models;
+
+namespace EyeSpy.Service.FaceApi.Services
+{
+    public class FaceIdentifyService : BaseFaceService
+    {
+        private const string IdentityEndpoint = "identify";
+
+        public FaceIdentifyService(string endpoint, string secret) : base(endpoint, secret) {}
+
+        public async Task<FaceIdentifyResponse> IdentifyFaceAsync(FaceIdentifyRequest faceIdentifyRequest)
+        {
+            return await PostAsync<FaceIdentifyResponse, FaceIdentifyRequest>(IdentityEndpoint, faceIdentifyRequest, (request) => this.ConfigureRequestWithSubscriptionHeader(request));
+        }
+    }
+}
