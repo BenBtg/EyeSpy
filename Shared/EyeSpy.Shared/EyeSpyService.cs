@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace EyeSpy.Shared
@@ -8,19 +9,20 @@ namespace EyeSpy.Shared
     {
         public Task<List<Person>> GetTrustedPersons() => GetAsync<List<Person>>($"trustedpersons");
 
-        public Task AddTrustedPerson(PersonData newPerson)
-        {
-            //TODO: implement
+        public Task AddTrustedPerson(PersonData newPerson) => PostAsync<object>(
+            $"trustedpersons?name={Uri.EscapeUriString(newPerson?.Name)}",
+            modifyRequest: r =>
+            {
+                var streamContent = new StreamContent(newPerson?.ImageStream);
+                r.Content = streamContent;
+            });
 
-            return Task.FromResult(true);
-        }
-
-        public Task<bool> ValidaPerson(PersonData person)
-        {
-            //TODO: implement
-
-            return Task.FromResult(true);
-        }
-
+        public Task<bool> ValidaPerson(PersonData person) => PostAsync<bool>(
+            $"detections",
+            modifyRequest: r =>
+            {
+                var streamContent = new StreamContent(person?.ImageStream);
+                r.Content = streamContent;
+            });
     }
 }
