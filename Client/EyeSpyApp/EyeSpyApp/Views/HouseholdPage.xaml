@@ -26,18 +26,41 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Padding="10">
+                            <Grid HeightRequest="120">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image
+                                    Grid.RowSpan="2"
+                                    WidthRequest="120"
+                                    HeightRequest="120"
+                                    Source="{Binding ImageUrl}"
+                                    />
+                                
                                 <Label 
+                                    Grid.Column="1"
+                                    VerticalOptions="End"
                                     Text="{Binding Text}" 
                                     LineBreakMode="NoWrap" 
                                     Style="{DynamicResource ListItemTextStyle}" 
-                                    FontSize="16" />
+                                    FontSize="20" />
+
                                 <Label 
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    VerticalOptions="Start"
                                     Text="{Binding Description}" 
                                     LineBreakMode="NoWrap" 
                                     Style="{DynamicResource ListItemDetailTextStyle}" 
                                     FontSize="13" />
-                            </StackLayout>
+                                
+                            </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

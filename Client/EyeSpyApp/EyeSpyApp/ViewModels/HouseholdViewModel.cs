@@ -41,7 +41,13 @@ namespace EyeSpyApp.ViewModels
 
                 Members.Clear();
                 trustedPersons?
-                    .Select(tp => new HouseholdMember { Id = tp.Id, Text = tp.Name, ImageUrl = tp.ProfileUrl })
+                    .Select(tp => new HouseholdMember 
+                    { 
+                        Id = tp.Id, 
+                        Text = tp.Name, 
+                        ImageUrl = tp.ProfileUrl ,
+                        Description = $"Last activity: July 23d, 2018"
+                    })
                     .ToList()
                     .ForEach(Members.Add);
             }

@@ -8,14 +8,18 @@ namespace EyeSpy.Shared
     {
         public Task<List<Person>> GetTrustedPersons() => GetAsync<List<Person>>($"trustedpersons");
 
-        public async Task AddTrustedPerson(PersonData newPerson)
+        public Task AddTrustedPerson(PersonData newPerson)
         {
-            throw new NotImplementedException();
+            //TODO: implement
+
+            return Task.FromResult(true);
         }
 
-        public async Task<bool> ValidaPerson(PersonData person)
+        public Task<bool> ValidaPerson(PersonData person)
         {
-            throw new NotImplementedException();
+            //TODO: implement
+
+            return Task.FromResult(true);
         }
 
     }
