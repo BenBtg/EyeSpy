@@ -24,7 +24,7 @@ namespace EyeSpy.Shared
         /// </summary>
         /// <param name="baseApiUri">Base API URI.</param>
         /// <param name="handler">Handler.</param>
-        protected BaseHttpService(string baseApiUri = "https://eyespyservicehack2018.azurewebsites.net/api/", HttpMessageHandler handler = null)
+        protected BaseHttpService(string baseApiUri = Constants.EyeSpyApiUrl, HttpMessageHandler handler = null)
         {
             if (handler != null)
                 _client = new HttpClient(handler);
@@ -32,7 +32,7 @@ namespace EyeSpy.Shared
                 _client = new HttpClient();
 
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
-            _client.DefaultRequestHeaders.Add("apikey", "ea3c0fb8-f7fc-4376-830a-d5c920098689");
+            _client.DefaultRequestHeaders.Add("apikey", Constants.EyeSpyApiKey);
 
             _baseApiUri = baseApiUri;
         }
@@ -184,7 +184,10 @@ namespace EyeSpy.Shared
                     var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                     if (!string.IsNullOrWhiteSpace(json))
+                    {
+                        System.Diagnostics.Debug.WriteLine($"RESPONSE BODY: {json}");
                         result = JsonConvert.DeserializeObject<T>(json);
+                    }
                 }
             }
             else
@@ -213,7 +216,7 @@ namespace EyeSpy.Shared
 
             modifyRequest?.Invoke(request);
 
-            System.Diagnostics.Debug.WriteLine($"{requestType} {request.RequestUri}\nBODY: {jsonRequest}");
+            System.Diagnostics.Debug.WriteLine($"{requestType} {request.RequestUri}\nREQUEST BODY: {jsonRequest}");
 
             var response = await _client.SendAsync(request, cancellationToken);
 
