@@ -3,6 +3,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <Color x:Key="NavigationPrimary">#8bc34a</Color>
+            <Color x:Key="NavigationSecondary">#4a672a</Color>
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
                 <Setter Property="BarTextColor" Value="White" />

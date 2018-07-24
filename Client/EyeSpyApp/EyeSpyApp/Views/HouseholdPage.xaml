@@ -60,6 +60,7 @@
                                     Text="{Binding Description}" 
                                     LineBreakMode="NoWrap" 
                                     Style="{DynamicResource ListItemDetailTextStyle}" 
+                                    TextColor="{StaticResource NavigationPrimary}"
                                     FontSize="13" />
                                 
                             </Grid>
