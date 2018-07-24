@@ -17,16 +17,16 @@ namespace EyeSpy.Service.AzureStorage.Models
 
         public string Name { get; set; }
 
-        public string ProfileUrl { get; set; }
+        public string ImageReference { get; set; }
 
         public static TrustedPersonEntity FromTrustedPerson(TrustedPerson trustedPerson)
         {
-            return new TrustedPersonEntity(trustedPerson.Id) { Name = trustedPerson.Name, ProfileUrl = trustedPerson.ProfileUrl };
+            return new TrustedPersonEntity(trustedPerson.Id) { Name = trustedPerson.Name, ImageReference = trustedPerson.ImageReference };
         }
 
         public TrustedPerson ToTrustedPerson()
         {
-            return new TrustedPerson { Id = this.RowKey, Name = this.Name, ProfileUrl = this.ProfileUrl };
+            return new TrustedPerson { Id = this.RowKey, Name = this.Name, ImageReference = this.ImageReference };
         }
     }
 }
