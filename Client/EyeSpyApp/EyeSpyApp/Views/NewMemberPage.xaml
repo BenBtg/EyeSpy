@@ -12,7 +12,7 @@
         <ToolbarItem 
             Text="Save" 
             Command="{Binding SaveMemberCommand}" 
-            IsEnabled="{Binding IsNotBusy}"/>
+            IsEnabled="{Binding CanSaveMember}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
          <Grid HorizontalOptions="FillAndExpand">

@@ -15,15 +15,20 @@ namespace EyeSpyApp.ViewModels
         public HouseholdMember Member { get; }
 
         private Stream _memberImageStream;
-        public Stream MemberImageStream 
-        { 
+        public Stream MemberImageStream
+        {
             get { return _memberImageStream; }
-            set 
+            set
             {
                 if (SetProperty(ref _memberImageStream, value))
+                {
                     OnPropertyChanged(nameof(IsMemberImageStreamDefined));
+                    OnPropertyChanged(nameof(CanSaveMember));
+                }
             }
         }
+
+        public bool CanSaveMember => IsNotBusy && IsMemberImageStreamDefined;
 
         public bool IsMemberImageStreamDefined => MemberImageStream != null;
 
@@ -81,6 +86,7 @@ namespace EyeSpyApp.ViewModels
             try
             {
                 IsBusy = true;
+                OnPropertyChanged(nameof(CanSaveMember));
 
                 var newMember = new PersonData()
                 {
@@ -103,6 +109,7 @@ namespace EyeSpyApp.ViewModels
             finally
             {
                 IsBusy = false;
+                OnPropertyChanged(nameof(CanSaveMember));
             }
         }
     }

@@ -19,7 +19,7 @@ namespace EyeSpyApp.Views
             On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
 
             var newMemberContext = (NewMemberViewModel)BindingContext;
-            newMemberContext.OnSaveMemberCommandCompleted = async () => await Navigation.PopModalAsync();
+            newMemberContext.OnSaveMemberCommandCompleted = async () => await Navigation.PopAsync();
             newMemberContext.OnMemberImageSelected = async () => await RenderSelectedImage();
         }
 
