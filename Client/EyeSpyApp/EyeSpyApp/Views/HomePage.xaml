@@ -11,9 +11,14 @@
     android:TabbedPage.BarSelectedItemColor="White"
     android:TabbedPage.BarBackgroundColor="#8bc34a">
     <TabbedPage.Children>
-        <NavigationPage Title="Household" Icon="tab_feed.png">
+        <NavigationPage Title="Household" Icon="tab_household.png">
             <x:Arguments>
                 <views:HouseholdPage />
+            </x:Arguments>
+        </NavigationPage>
+         <NavigationPage Title="Detections" Icon="tab_detections.png">
+            <x:Arguments>
+                <views:DetectionsPage />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage Title="About" Icon="tab_about.png">

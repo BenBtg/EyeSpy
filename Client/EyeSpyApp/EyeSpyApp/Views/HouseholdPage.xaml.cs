@@ -14,6 +14,8 @@ namespace EyeSpyApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HouseholdPage : ContentPage
     {
+        public HouseholdViewModel ViewModel => (HouseholdViewModel)BindingContext;
+
         public HouseholdPage()
         {
             InitializeComponent();
@@ -41,9 +43,8 @@ namespace EyeSpyApp.Views
         {
             base.OnAppearing();
 
-            var householdContext = (HouseholdViewModel)BindingContext;
-            if (householdContext.Members.Count == 0)
-                householdContext.LoadMembersCommand.Execute(null);
+            if (ViewModel.Members.Count == 0)
+                ViewModel.LoadMembersCommand.Execute(null);
         }
     }
 }

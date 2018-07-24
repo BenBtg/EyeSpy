@@ -9,6 +9,8 @@ namespace EyeSpy.Shared
     {
         public Task<List<Person>> GetTrustedPersons() => GetAsync<List<Person>>($"trustedpersons");
 
+        public Task<Person> GetTrustedPerson(string id) => GetAsync<Person>($"trustedpersons/{id}");
+
         public Task AddTrustedPerson(PersonData newPerson) => PostAsync<object>(
             $"trustedpersons?name={Uri.EscapeUriString(newPerson?.Name)}",
             modifyRequest: r =>
@@ -17,7 +19,11 @@ namespace EyeSpy.Shared
                 r.Content = streamContent;
             });
 
-        public Task<bool> ValidaPerson(PersonData person) => PostAsync<bool>(
+        public Task<List<Detection>> GetDetections() => GetAsync<List<Detection>>($"detections");
+
+        public Task<Detection> GetDetection(string id) => GetAsync<Detection>($"detections/{id}");
+
+        public Task<bool> Detect(PersonData person) => PostAsync<bool>(
             $"detections",
             modifyRequest: r =>
             {

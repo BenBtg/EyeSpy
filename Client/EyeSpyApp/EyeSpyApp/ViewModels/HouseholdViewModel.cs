@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using EyeSpy.Shared;
+using EyeSpyApp.Helpers;
 using EyeSpyApp.Models;
 using EyeSpyApp.Views;
 using Xamarin.Forms;
@@ -37,12 +37,12 @@ namespace EyeSpyApp.ViewModels
 
                 Members.Clear();
                 trustedPersons?
-                    .Select(tp => new HouseholdMember 
-                    { 
-                        Id = tp.Id, 
-                        Text = tp.Name, 
-                        ImageUrl = tp.ProfileUrl ,
-                        Description = $"Last activity: July 23d, 2018"
+                    .Select(tp => new HouseholdMember
+                    {
+                        Id = tp.Id,
+                        Text = tp.Name,
+                        ImageUrl = tp.ProfileUrl.WithSasToken("TBD"),
+                        Description = $"Last activity: {DateTime.Now:d}",
                     })
                     .ToList()
                     .ForEach(Members.Add);

@@ -72,12 +72,8 @@
     <Compile Include="Services\ImagePickerService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\tab_about.png" />
     <BundleResource Include="Resources\tab_about%402x.png" />
     <BundleResource Include="Resources\tab_about%403x.png" />
-    <BundleResource Include="Resources\tab_feed.png" />
-    <BundleResource Include="Resources\tab_feed%402x.png" />
-    <BundleResource Include="Resources\tab_feed%403x.png" />
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-20x20%402x.png" />
@@ -99,6 +95,10 @@
     <BundleResource Include="Resources\ic_logo%402x.png" />
     <BundleResource Include="Resources\ic_add%402x.png" />
     <BundleResource Include="Resources\ic_add%403x.png" />
+    <BundleResource Include="Resources\tab_household%402x.png" />
+    <BundleResource Include="Resources\tab_household%403x.png" />
+    <BundleResource Include="Resources\tab_detections%402x.png" />
+    <BundleResource Include="Resources\tab_detections%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
