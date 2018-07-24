@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Gms.Common;
 using Android.Graphics;
 using Android.OS;
+using Firebase.Iid;
 using ImageCircle.Forms.Plugin.Droid;
 
 namespace EyeSpyApp.Droid
@@ -39,10 +40,14 @@ namespace EyeSpyApp.Droid
             base.OnCreate(bundle);
 
             CheckAppPermissions();
+            IsPlayServicesAvailable();
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
             ImageCircleRenderer.Init();
 
             LoadApplication(new App());
+
+            System.Diagnostics.Debug.WriteLine(FirebaseInstanceId.Instance.Token);
         }
 
         private void CheckAppPermissions()
@@ -117,6 +122,24 @@ namespace EyeSpyApp.Droid
                     CameraImageTaskCompletionSource.SetResult(null);
                 }
             }
+        }
+
+        public bool IsPlayServicesAvailable()
+        {
+            int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(this);
+            var result = true;
+            var resultMessage = "Google Play Services is available."; 
+            if (resultCode != ConnectionResult.Success)
+            {
+                if (GoogleApiAvailability.Instance.IsUserResolvableError(resultCode))
+                    resultMessage = GoogleApiAvailability.Instance.GetErrorString(resultCode);
+                else
+                    resultMessage = "This device is not supported";
+                result = false;
+            }
+
+            System.Diagnostics.Debug.WriteLine(resultMessage);
+            return result;
         }
     }
 }

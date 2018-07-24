@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "325608366908",
+    "firebase_url": "https://eyespy-oneweek.firebaseio.com",
+    "project_id": "eyespy-oneweek",
+    "storage_bucket": "eyespy-oneweek.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325608366908:android:809df2754c70d379",
+        "android_client_info": {
+          "package_name": "com.microsoft.eyespyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325608366908-3vlbbrk171d9b61htfn016guf1udqs3b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGxOypyj6Z2OMxsClXe_EseUdZQuwBpEI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
