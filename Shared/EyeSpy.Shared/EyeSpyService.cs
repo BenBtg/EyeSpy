@@ -6,10 +6,7 @@ namespace EyeSpy.Shared
 {
     public class EyeSpyService : BaseHttpService, IEyeSpyService
     {
-        public async Task<List<Person>> GetTrustedPersons()
-        {
-            throw new NotImplementedException();
-        }
+        public Task<List<Person>> GetTrustedPersons() => GetAsync<List<Person>>($"trustedpersons");
 
         public async Task AddTrustedPerson(PersonData newPerson)
         {

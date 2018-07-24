@@ -32,6 +32,7 @@ namespace EyeSpy.Shared
                 _client = new HttpClient();
 
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
+            _client.DefaultRequestHeaders.Add("apikey", "ea3c0fb8-f7fc-4376-830a-d5c920098689");
 
             _baseApiUri = baseApiUri;
         }
