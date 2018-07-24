@@ -19,7 +19,7 @@ namespace EyeSpyApp.ViewModels
             Members = new ObservableCollection<HouseholdMember>();
             LoadMembersCommand = new Command(async () => await ExecuteLoadMembersCommand());
 
-            MessagingCenter.Subscribe<NewMemberPage, HouseholdMember>(this, "AddMember", async (obj, item) =>
+            MessagingCenter.Subscribe<NewMemberViewModel, HouseholdMember>(this, "AddMember", async (obj, item) =>
             {
                 var _item = item as HouseholdMember;
                 Members.Add(_item);
