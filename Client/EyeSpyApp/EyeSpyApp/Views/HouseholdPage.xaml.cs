@@ -33,8 +33,8 @@ namespace EyeSpyApp.Views
 
         async void AddMember_Clicked(object sender, EventArgs e)
         {
-            var newMemberPage = new NavigationPage(new NewMemberPage());
-            await Navigation.PushModalAsync(newMemberPage);
+            var newMemberPage = new NewMemberPage();
+            await Navigation.PushAsync(newMemberPage);
         }
 
         protected override void OnAppearing()

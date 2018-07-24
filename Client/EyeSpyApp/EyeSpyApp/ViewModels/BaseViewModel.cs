@@ -12,6 +12,7 @@ namespace EyeSpyApp.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         public Lazy<IEyeSpyService> EyeSpyService { get; } = new Lazy<IEyeSpyService>(() => DependencyService.Get<IEyeSpyService>());
+        public Lazy<IImagePickerService> ImagePickerService { get; } = new Lazy<IImagePickerService>(() => DependencyService.Get<IImagePickerService>());
 
         bool isBusy = false;
         public bool IsBusy
