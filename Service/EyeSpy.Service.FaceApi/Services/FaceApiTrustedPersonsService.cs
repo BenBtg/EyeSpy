@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ExeSpy.Service.Common.Abstractions;
+using EyeSpy.Service.Common.Abstractions;
 using EyeSpy.Service.FaceApi.Models;
 
 namespace EyeSpy.Service.FaceApi.Services

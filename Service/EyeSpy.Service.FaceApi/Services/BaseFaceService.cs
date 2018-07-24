@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using ExeSpy.Service.Common.Services;
+using EyeSpy.Service.Common.Services;
 
 namespace EyeSpy.Service.FaceApi.Services
 {

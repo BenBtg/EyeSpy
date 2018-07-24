@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using ExeSpy.Service.Common;
-using ExeSpy.Service.Common.Abstractions;
+using EyeSpy.Service.Common;
+using EyeSpy.Service.Common.Abstractions;
 using EyeSpy.Service.Authentication;
 using EyeSpy.Service.Extensions;
 using EyeSpy.Service.FaceApi.Services;
@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using EyeSpy.Service.AzureStorage.Services;
 
 namespace EyeSpy.Service
 {
@@ -29,6 +30,8 @@ namespace EyeSpy.Service
             ApiKey = Configuration.GetValue<string>(ServiceConstants.EyeSpyKey);
             var faceApiEndpoint = Configuration.GetValue<string>(ServiceConstants.FaceApiEndpoint);
             var faceApiSubscriptionKey = Configuration.GetValue<string>(ServiceConstants.FaceApiSubscriptionKeySettingName);
+            var azureStorageAccountName = Configuration.GetValue<string>(ServiceConstants.AzureStorageAccountName);
+            var azureStorageAccountKey = Configuration.GetValue<string>(ServiceConstants.AzureStorageAccountKey);
 
             services.AddAuthentication(options =>
             {
@@ -40,6 +43,7 @@ namespace EyeSpy.Service
             });
 
             services.AddSingleton<ITrustedPersonsService>(new FaceApiTrustedPersonsService(faceApiEndpoint, faceApiSubscriptionKey));
+            services.AddSingleton<ITrustedPersonsStorage>(new AzureTrustedPersonsStorage(azureStorageAccountName, azureStorageAccountKey));
 
             services.AddMvc();
         }

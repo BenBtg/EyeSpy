@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace ExeSpy.Service.Common.Abstractions
+namespace EyeSpy.Service.Common.Abstractions
 {
     public interface ITrustedPersonsService
     {

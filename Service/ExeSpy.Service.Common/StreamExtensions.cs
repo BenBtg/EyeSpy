@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace ExeSpy.Service.Common
+namespace EyeSpy.Service.Common
 {
     public static class StreamExtensions
     {

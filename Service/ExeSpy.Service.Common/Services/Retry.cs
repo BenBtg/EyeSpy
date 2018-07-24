@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ExeSpy.Service.Common.Services
+namespace EyeSpy.Service.Common.Services
 {
     public static class Retry
     {

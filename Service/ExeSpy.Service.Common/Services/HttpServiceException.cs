@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace ExeSpy.Service.Common.Services
+namespace EyeSpy.Service.Common.Services
 {
     public class HttpServiceException : Exception
     {

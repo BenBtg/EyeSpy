@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ExeSpy.Service.Common.Models
+namespace EyeSpy.Service.Common.Models
 {
     public class TrustedPerson
     {

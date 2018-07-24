@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace ExeSpy.Service.Common.Services
+namespace EyeSpy.Service.Common.Services
 {
     public class NoContentResult
     {
