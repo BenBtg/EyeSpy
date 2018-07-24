@@ -28,7 +28,9 @@
                     </Grid.GestureRecognizers>
                     <Image Source="ic_add"
                            VerticalOptions="Center"
-                           HorizontalOptions="Center" >
+                           HorizontalOptions="Center" 
+                           WidthRequest="50"
+                           HeightRequest="50">
                     </Image>
                 </Grid>
                 <Image
