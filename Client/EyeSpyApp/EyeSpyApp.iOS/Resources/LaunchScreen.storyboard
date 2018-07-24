@@ -21,8 +21,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Icon-60.png" translatesAutoresizingMaskIntoConstraints="NO" id="23">
-                                <rect key="frame" x="97" y="243" width="180" height="180"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="ic_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="23">
+                                <rect key="frame" x="157" y="303" width="60" height="60"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                             </imageView>
                         </subviews>
@@ -39,6 +39,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Icon-60.png" width="180" height="180"/>
+        <image name="ic_logo.png" width="60" height="60"/>
     </resources>
 </document>
