@@ -18,6 +18,7 @@ using Android.Content.PM;
 using Android.Gms.Common;
 // using LiveCam.Shared;
 using System.Threading.Tasks;
+using EyeSpyService;
 // using ServiceHelpers;
 
 namespace EyeSpyCam.Droid
@@ -31,6 +32,7 @@ namespace EyeSpyCam.Droid
 
         private CameraSourcePreview mPreview;
         private GraphicOverlay mGraphicOverlay;
+
 
 
         public static string GreetingsText
@@ -63,7 +65,6 @@ namespace EyeSpyCam.Droid
                 await LiveCamHelper.RegisterFaces();*/
             }
             else { RequestCameraPermission(); }
-
 
         }
 
@@ -219,25 +220,27 @@ namespace EyeSpyCam.Droid
     }
 
 
-    class GraphicFaceTracker : Tracker
+    class GraphicFaceTracker : Tracker, CameraSource.IPictureCallback 
     {
         private GraphicOverlay mOverlay;
         private FaceGraphic mFaceGraphic;
         private CameraSource mCameraSource = null;
         private bool isProcessing = false;
+        private EyeSpyAPI eyeSpyAPI;
 
         public GraphicFaceTracker(GraphicOverlay overlay, CameraSource cameraSource = null)
         {
             mOverlay = overlay;
             mFaceGraphic = new FaceGraphic(overlay);
             mCameraSource = cameraSource;
+            eyeSpyAPI = new EyeSpyAPI();
         }
 
         public override void OnNewItem(int id, Java.Lang.Object item)
         {
             mFaceGraphic.SetId(id);
-            //if (mCameraSource != null && !isProcessing)
-                //mCameraSource.TakePicture(null, this);
+            if (mCameraSource != null && !isProcessing)
+                mCameraSource.TakePicture(null, this);
         }
 
         public override void OnUpdate(Detector.Detections detections, Java.Lang.Object item)
@@ -260,30 +263,33 @@ namespace EyeSpyCam.Droid
 
         }
 
-        //public void OnPictureTaken(byte[] data)
-        //{
-        //    Task.Run(async () =>
-        //    {
-        //        try
-        //        {
-        //            isProcessing = true;
+        public void OnPictureTaken(byte[] data)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    isProcessing = true;
 
-        //            Console.WriteLine("face detected: ");
-
-        //            var imageAnalyzer = new ImageAnalyzer(data);
-        //            await LiveCamHelper.ProcessCameraCapture(imageAnalyzer);
-
-        //        }
-
-        //        finally
-        //        {
-        //            isProcessing = false;
+                    Console.WriteLine("face detected: ");
 
 
-        //        }
+                    await eyeSpyAPI.IdentifyFacesAsync(data);
 
-        //    });
-        //}
+                    //var imageAnalyzer = new ImageAnalyzer(data);
+                    //await LiveCamHelper.ProcessCameraCapture(imageAnalyzer);
+
+                }
+
+                finally
+                {
+                    isProcessing = false;
+
+
+                }
+
+            });
+        }
     }
 
 }

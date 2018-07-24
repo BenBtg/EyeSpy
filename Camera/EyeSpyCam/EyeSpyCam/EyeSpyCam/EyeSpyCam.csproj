@@ -132,6 +132,12 @@
     <Folder Include="Resources\drawable\" />
     <Folder Include="CustomControls\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EyeSpyService\EyeSpyService.csproj">
+      <Project>{C1C84A25-17F1-48F8-928A-DD85853B94FA}</Project>
+      <Name>EyeSpyService</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Build.Download.0.4.9\build\Xamarin.Build.Download.targets" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.9\build\Xamarin.Build.Download.targets')" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Basement.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Basement.60.1142.1\build\MonoAndroid80\Xamarin.GooglePlayServices.Basement.targets')" />
