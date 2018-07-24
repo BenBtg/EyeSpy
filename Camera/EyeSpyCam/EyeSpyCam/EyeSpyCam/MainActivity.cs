@@ -18,6 +18,7 @@ using Android.Content.PM;
 using Android.Gms.Common;
 // using LiveCam.Shared;
 using System.Threading.Tasks;
+using EyeSpyService;
 // using ServiceHelpers;
 
 namespace EyeSpyCam.Droid
@@ -31,6 +32,7 @@ namespace EyeSpyCam.Droid
 
         private CameraSourcePreview mPreview;
         private GraphicOverlay mGraphicOverlay;
+
 
 
         public static string GreetingsText
@@ -58,12 +60,11 @@ namespace EyeSpyCam.Droid
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
                 CreateCameraSource();
-                LiveCamHelper.Init();
+                /*LiveCamHelper.Init();
                 LiveCamHelper.GreetingsCallback = (s) => { RunOnUiThread(() => GreetingsText = s); };
-                await LiveCamHelper.RegisterFaces();
+                await LiveCamHelper.RegisterFaces();*/
             }
             else { RequestCameraPermission(); }
-
 
         }
 
@@ -219,18 +220,20 @@ namespace EyeSpyCam.Droid
     }
 
 
-    class GraphicFaceTracker : Tracker, CameraSource.IPictureCallback
+    class GraphicFaceTracker : Tracker, CameraSource.IPictureCallback 
     {
         private GraphicOverlay mOverlay;
         private FaceGraphic mFaceGraphic;
         private CameraSource mCameraSource = null;
         private bool isProcessing = false;
+        private EyeSpyAPI eyeSpyAPI;
 
         public GraphicFaceTracker(GraphicOverlay overlay, CameraSource cameraSource = null)
         {
             mOverlay = overlay;
             mFaceGraphic = new FaceGraphic(overlay);
             mCameraSource = cameraSource;
+            eyeSpyAPI = new EyeSpyAPI();
         }
 
         public override void OnNewItem(int id, Java.Lang.Object item)
@@ -270,8 +273,11 @@ namespace EyeSpyCam.Droid
 
                     Console.WriteLine("face detected: ");
 
-                    var imageAnalyzer = new ImageAnalyzer(data);
-                    await LiveCamHelper.ProcessCameraCapture(imageAnalyzer);
+
+                    await eyeSpyAPI.IdentifyFacesAsync(data);
+
+                    //var imageAnalyzer = new ImageAnalyzer(data);
+                    //await LiveCamHelper.ProcessCameraCapture(imageAnalyzer);
 
                 }
 

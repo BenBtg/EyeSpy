@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeSpyCam", "EyeSpyCam\EyeSpyCam.csproj", "{999C3B32-F69B-4ED7-88EA-B66FF795EED9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeSpyService", "EyeSpyService\EyeSpyService.csproj", "{C1C84A25-17F1-48F8-928A-DD85853B94FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +15,9 @@ Global
 		{999C3B32-F69B-4ED7-88EA-B66FF795EED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{999C3B32-F69B-4ED7-88EA-B66FF795EED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{999C3B32-F69B-4ED7-88EA-B66FF795EED9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1C84A25-17F1-48F8-928A-DD85853B94FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1C84A25-17F1-48F8-928A-DD85853B94FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1C84A25-17F1-48F8-928A-DD85853B94FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1C84A25-17F1-48F8-928A-DD85853B94FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

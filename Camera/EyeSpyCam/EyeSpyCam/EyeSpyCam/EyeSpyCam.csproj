@@ -110,6 +110,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomControls\CameraSourcePreview.cs" />
     <Compile Include="CustomControls\GraphicOverlay.cs" />
+    <Compile Include="FaceGraphic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -120,6 +121,7 @@
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
     <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\mipmap-hdpi\" />
@@ -129,6 +131,12 @@
     <Folder Include="Resources\mipmap-xxxhdpi\" />
     <Folder Include="Resources\drawable\" />
     <Folder Include="CustomControls\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EyeSpyService\EyeSpyService.csproj">
+      <Project>{C1C84A25-17F1-48F8-928A-DD85853B94FA}</Project>
+      <Name>EyeSpyService</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Build.Download.0.4.9\build\Xamarin.Build.Download.targets" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.9\build\Xamarin.Build.Download.targets')" />
