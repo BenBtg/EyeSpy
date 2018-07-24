@@ -15,4 +15,7 @@
   <ItemGroup>
     <Compile Remove="Services\IDataStore.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
 </Project>

@@ -16,6 +16,11 @@
                 <views:HouseholdPage />
             </x:Arguments>
         </NavigationPage>
+         <NavigationPage Title="Detections" Icon="tab_detections.png">
+            <x:Arguments>
+                <views:DetectionsPage />
+            </x:Arguments>
+        </NavigationPage>
         <NavigationPage Title="About" Icon="tab_about.png">
             <x:Arguments>
                 <views:AboutPage />

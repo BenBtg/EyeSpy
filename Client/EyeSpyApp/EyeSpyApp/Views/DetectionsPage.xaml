@@ -4,26 +4,22 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     xmlns:vm="clr-namespace:EyeSpyApp.ViewModels" 
     xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
-    x:Class="EyeSpyApp.Views.HouseholdPage" 
+    x:Class="EyeSpyApp.Views.DetectionsPage" 
     Title="{Binding Title}" >
      <ContentPage.BindingContext>
-        <vm:HouseholdViewModel />
+        <vm:DetectionsViewModel />
     </ContentPage.BindingContext>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Clicked="AddMember_Clicked"/>
-    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <ListView 
-                x:Name="MembersListView" 
-                ItemsSource="{Binding Members}" 
+                x:Name="DetectionsListView" 
+                ItemsSource="{Binding Detections}" 
                 VerticalOptions="FillAndExpand" 
                 HasUnevenRows="true" 
-                RefreshCommand="{Binding LoadMembersCommand}" 
+                RefreshCommand="{Binding LoadDetectionsCommand}" 
                 IsPullToRefreshEnabled="true" 
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
-                CachingStrategy="RecycleElement" 
-                ItemSelected="OnMemberSelected">
+                CachingStrategy="RecycleElement">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -42,14 +38,14 @@
                                     Grid.RowSpan="2"
                                     WidthRequest="120"
                                     HeightRequest="120"
-                                    Source="{Binding ImageUrl}"
+                                    Source="{Binding DetectionImageUrl}"
                                     BackgroundColor="{StaticResource NavigationPrimary}"
                                     />
                                 
                                 <Label 
                                     Grid.Column="1"
                                     VerticalOptions="End"
-                                    Text="{Binding Text}" 
+                                    Text="{Binding DetectionTimestamp}" 
                                     LineBreakMode="MiddleTruncation" 
                                     Style="{DynamicResource ListItemTextStyle}" 
                                     FontSize="20" />
@@ -58,7 +54,7 @@
                                     Grid.Column="1"
                                     Grid.Row="1"
                                     VerticalOptions="Start"
-                                    Text="{Binding Description}" 
+                                    Text="{Binding Id}" 
                                     LineBreakMode="MiddleTruncation" 
                                     Style="{DynamicResource ListItemDetailTextStyle}" 
                                     TextColor="{StaticResource NavigationPrimary}"
