@@ -21,7 +21,7 @@ namespace EyeSpy.Service.Controllers
         public async Task<IActionResult> Get([FromQuery]string path, [FromQuery]string name)
         {
             var imageBytes = await this.trustedPersonsStorage.GetMediaContentAsync(path, name);
-            return File(imageBytes, "image/png", $"{name}.png"); // TODO: Do this better. Need to confirm and store the type as part of file upload
+            return File(imageBytes, "application/octet-stream");
         }
     }
 }

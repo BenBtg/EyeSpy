@@ -25,7 +25,7 @@ namespace EyeSpy.Service.Scratch
 
         private static async Task TestNotification()
         {
-            var hubConfig = new NotificationHubConfiguration("EyeSpyNotificationNamespaceHack2018", "EyeSpyNotificationHubHack2018", "DefaultFullSharedAccessSignature", "6hUFdXZvxHmExKOi7iht3M8ZcAHxbejg0L/LzgezsXQ=");
+            var hubConfig = new NotificationHubConfiguration("<hub_namespace>", "<hub_name>", "<hub_key_name>", "<hub_key>");
             ITrustedPersonsNotifications trustedPersonsNotifications = new AzureTrustedPersonsNotifications(hubConfig);
 
             var baseAddressTest = hubConfig.BaseAddress;
