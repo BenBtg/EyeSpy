@@ -8,6 +8,8 @@ using Android.Content.PM;
 using Android.Gms.Common;
 using Android.Graphics;
 using Android.OS;
+using EyeSpyApp.Android.Services;
+using EyeSpyApp.Services;
 using Firebase.Iid;
 using ImageCircle.Forms.Plugin.Droid;
 
@@ -40,12 +42,18 @@ namespace EyeSpyApp.Droid
             base.OnCreate(bundle);
 
             CheckAppPermissions();
-            IsPlayServicesAvailable();
-
+            UpdateNotificationHubInstallation();
+            AppState.DetectionsId = this.Intent.GetStringExtra("detectionId");
             global::Xamarin.Forms.Forms.Init(this, bundle);
             ImageCircleRenderer.Init();
 
             LoadApplication(new App());
+        }
+
+        private async Task CheckForPushActivation()
+        {
+            await Task.Delay(5000);
+           
         }
 
         private void CheckAppPermissions()
@@ -122,7 +130,15 @@ namespace EyeSpyApp.Droid
             }
         }
 
-        public bool IsPlayServicesAvailable()
+        private Task UpdateNotificationHubInstallation()
+        {
+            if (!IsPlayServicesAvailable())
+                return Task.FromResult(false);
+
+            return new NotificationHubService().SendRegistrationToServer(this, FirebaseInstanceId.Instance.Token);
+        }
+
+        private bool IsPlayServicesAvailable()
         {
             int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(this);
             var result = true;

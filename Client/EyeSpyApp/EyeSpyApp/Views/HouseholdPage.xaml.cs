@@ -39,12 +39,27 @@ namespace EyeSpyApp.Views
             await Navigation.PushAsync(newMemberPage);
         }
 
+        async Task OpenDetectionDetails(string detectionId)
+        {
+            var detectionDetailsViewModel = new DetectionDetailsViewModel(detectionId);
+            await detectionDetailsViewModel.Init();
+            var detectionDetails = new DetectionDetailsPage() { BindingContext = detectionDetailsViewModel };
+            await Navigation.PushAsync(detectionDetails);
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
             if (ViewModel.Members.Count == 0)
                 ViewModel.LoadMembersCommand.Execute(null);
+
+            var detectionsId = EyeSpyApp.Services.AppState.DetectionsId;
+            if(!string.IsNullOrWhiteSpace(detectionsId))
+            {
+                EyeSpyApp.Services.AppState.DetectionsId = null;
+                OpenDetectionDetails(detectionsId);
+            }
         }
     }
 }

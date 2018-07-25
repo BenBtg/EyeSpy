@@ -92,6 +92,7 @@
     <Compile Include="Services\ImagePickerService.cs" />
     <Compile Include="Services\EyeSpyFirebaseIIDService.cs" />
     <Compile Include="Services\EyeSpyFirebaseMessagingService.cs" />
+    <Compile Include="Services\NotificationHubService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -120,6 +121,7 @@
     <AndroidResource Include="Resources\drawable\ic_add.png" />
     <AndroidResource Include="Resources\drawable\tab_household.png" />
     <AndroidResource Include="Resources\drawable\tab_detections.png" />
+    <AndroidResource Include="Resources\drawable\ic_alarm.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable-hdpi\" />
@@ -132,6 +134,10 @@
     <ProjectReference Include="..\EyeSpyApp\EyeSpyApp.csproj">
       <Project>{B7393973-AD05-4CC6-BE56-50F749490BEE}</Project>
       <Name>EyeSpyApp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Shared\EyeSpy.Shared\EyeSpy.Shared.csproj">
+      <Project>{2A5BC74B-7A0A-4CFE-A026-A4E28B608371}</Project>
+      <Name>EyeSpy.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

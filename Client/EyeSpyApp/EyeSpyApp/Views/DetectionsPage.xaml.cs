@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EyeSpy.Shared;
 using EyeSpyApp.Models;
 using EyeSpyApp.ViewModels;
 using EyeSpyApp.Views;
@@ -29,8 +30,16 @@ namespace EyeSpyApp.Views
                 ViewModel.LoadDetectionsCommand.Execute(null);
         }
 
-        void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+        async void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
         {
+            var detection = e.SelectedItem as Detection;
+            if (detection == null)
+                return;
+
+            var detectionDetailsContext = new DetectionDetailsViewModel(detection);
+            var detailsPage = new DetectionDetailsPage() { BindingContext = detectionDetailsContext };
+            await Navigation.PushAsync(detailsPage);
+
             DetectionsListView.SelectedItem = null;
         }
     }
