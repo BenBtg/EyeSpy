@@ -273,12 +273,7 @@ namespace EyeSpyCam.Droid
 
                     Console.WriteLine("face detected: ");
 
-
                     await eyeSpyAPI.IdentifyFacesAsync(data);
-
-                    //var imageAnalyzer = new ImageAnalyzer(data);
-                    //await LiveCamHelper.ProcessCameraCapture(imageAnalyzer);
-
                 }
 
                 finally
