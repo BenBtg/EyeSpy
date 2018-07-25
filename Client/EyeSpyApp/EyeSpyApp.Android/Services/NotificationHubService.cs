@@ -7,6 +7,7 @@ using Android.Content;
 using Android.Util;
 using Firebase.Iid;
 using Microsoft.Azure.NotificationHubs;
+using EyeSpy.Shared;
 
 namespace EyeSpyApp.Android.Services
 {
@@ -28,8 +29,7 @@ namespace EyeSpyApp.Android.Services
                     return;
 
                 deviceId = Regex.Replace(deviceId.ToLower(), @"[^\w]+", string.Empty, RegexOptions.Singleline);
-                var connection = "Endpoint=sb://eyespynotificationnamespacehack2018.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=6hUFdXZvxHmExKOi7iht3M8ZcAHxbejg0L/LzgezsXQ=";
-                var client = NotificationHubClient.CreateClientFromConnectionString(connection, "eyespynotificationhubhack2018");
+                var client = NotificationHubClient.CreateClientFromConnectionString(Constants.EyeSpyNotificationHubConnection, Constants.EyeSpyNotificationHubName);
                 var templates = new Dictionary<string, InstallationTemplate>
                 {
                     { "EyeSpyTemplate", new InstallationTemplate() { Body = @"{""data"":{""title"":""$(title)"", ""message"":""$(message)"", ""detectionId"":""$(detectionId)"", ""imageReference"":""$(imageReference)""}}" } }

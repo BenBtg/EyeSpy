@@ -26,6 +26,7 @@ namespace EyeSpyApp.Droid.Services
         private async Task SendNotification(string messageBody, IDictionary<string, string> data)
         {
             var intent = new Intent(this, typeof(MainActivity));
+            //intent.AddFlags(ActivityFlags.ReorderToFront | ActivityFlags.SingleTop);
             intent.AddFlags(ActivityFlags.ClearTop);
             foreach (string key in data.Keys)
             {
@@ -70,11 +71,9 @@ namespace EyeSpyApp.Droid.Services
                     notificationStyle.SetSummaryText(message);
                     var client = new HttpClient();
                     var imageStream = await client.GetStreamAsync(imageReference);
-                    //var imageUrl = new global::Java.Net.URL(imageReference);
-                    //var imageContent = (global::Java.IO.InputStream)imageUrl.Content;
                     var detectionImage = global::Android.Graphics.BitmapFactory.DecodeStream(imageStream);
                     notificationStyle.BigPicture(detectionImage);
-                    notificationStyle.BigLargeIcon(detectionImage);
+                    //notificationStyle.BigLargeIcon(detectionImage);
                     notificationBuilder.SetStyle(notificationStyle);
                 }
                 catch (Exception ex)

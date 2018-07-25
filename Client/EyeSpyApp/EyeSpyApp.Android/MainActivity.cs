@@ -8,9 +8,10 @@ using Android.Content.PM;
 using Android.Gms.Common;
 using Android.Graphics;
 using Android.OS;
+using EyeSpyApp.Android.Services;
+using EyeSpyApp.Services;
 using Firebase.Iid;
 using ImageCircle.Forms.Plugin.Droid;
-using EyeSpyApp.Android.Services;
 
 namespace EyeSpyApp.Droid
 {
@@ -42,11 +43,17 @@ namespace EyeSpyApp.Droid
 
             CheckAppPermissions();
             UpdateNotificationHubInstallation();
-
+            AppState.DetectionsId = this.Intent.GetStringExtra("detectionId");
             global::Xamarin.Forms.Forms.Init(this, bundle);
             ImageCircleRenderer.Init();
 
             LoadApplication(new App());
+        }
+
+        private async Task CheckForPushActivation()
+        {
+            await Task.Delay(5000);
+           
         }
 
         private void CheckAppPermissions()
