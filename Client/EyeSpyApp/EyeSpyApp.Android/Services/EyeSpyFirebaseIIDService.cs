@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Android.App;
-using Firebase.Iid;
-using Android.Util;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Util;
+using Firebase.Iid;
+using Microsoft.Azure.NotificationHubs;
 
 namespace EyeSpyApp.Android.Services
 {
@@ -24,17 +21,29 @@ namespace EyeSpyApp.Android.Services
             SendRegistrationToServer(refreshedToken);
         }
 
-        void SendRegistrationToServer(string token)
+        async Task SendRegistrationToServer(string token)
         {
-            //var hub = new NotificationHub(
-            //   "eyespynotificationhubhack2018",
-            //   "Endpoint=sb://eyespynotificationnamespacehack2018.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=mRES0Z5YXlT4w2vPikBKyfnnM8Y9N3OGNp9TkPHOT6U=",
-            //   this);
+            try
+            {
+                var connection = "Endpoint=sb://eyespynotificationnamespacehack2018.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=6hUFdXZvxHmExKOi7iht3M8ZcAHxbejg0L/LzgezsXQ=";
+                var client = NotificationHubClient.CreateClientFromConnectionString(connection, "eyespynotificationhubhack2018");
+                var installation = new Installation
+                {
+                    InstallationId = token,
+                    Platform = NotificationPlatform.Gcm,
+                    PushChannel = token,
+                    Tags = new List<string>() { "eyespy" },
+                };
+                await client.CreateOrUpdateInstallationAsync(installation);
 
-            //var tags = new List<string>() { };
-            //var regId = hub.Register(token, tags.ToArray()).RegistrationId;
+                var registeredInstallation = await client.GetInstallationAsync(token);
 
-            //Log.Debug(TAG, $"Successful registration of ID {regId}");
+                Log.Debug(TAG, $"Successful created/updated installation with ID {registeredInstallation?.InstallationId}");
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to register installation: {ex}");
+            }
         }
     }
 }

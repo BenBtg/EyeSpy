@@ -46,8 +46,6 @@ namespace EyeSpyApp.Droid
             ImageCircleRenderer.Init();
 
             LoadApplication(new App());
-
-            System.Diagnostics.Debug.WriteLine(FirebaseInstanceId.Instance.Token);
         }
 
         private void CheckAppPermissions()
@@ -136,6 +134,10 @@ namespace EyeSpyApp.Droid
                 else
                     resultMessage = "This device is not supported";
                 result = false;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine(FirebaseInstanceId.Instance.Token);
             }
 
             System.Diagnostics.Debug.WriteLine(resultMessage);
