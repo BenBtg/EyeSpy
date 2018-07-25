@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using EyeSpy.Shared;
-using Xamarin.Forms;
 using EyeSpyApp.Helpers;
-using System.Linq;
+using Xamarin.Forms;
 
 namespace EyeSpyApp.ViewModels
 {
