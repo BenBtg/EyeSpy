@@ -92,6 +92,7 @@
     <Compile Include="Services\ImagePickerService.cs" />
     <Compile Include="Services\EyeSpyFirebaseIIDService.cs" />
     <Compile Include="Services\EyeSpyFirebaseMessagingService.cs" />
+    <Compile Include="Services\NotificationHubService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

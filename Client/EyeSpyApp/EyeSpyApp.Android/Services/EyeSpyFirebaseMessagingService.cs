@@ -5,6 +5,7 @@ using Android.Media;
 using Android.Util;
 using Firebase.Messaging;
 using System.Collections.Generic;
+using EyeSpyApp.Helpers;
 
 namespace EyeSpyApp.Droid.Services
 {
@@ -29,16 +30,45 @@ namespace EyeSpyApp.Droid.Services
                 intent.PutExtra(key, data[key]);
             }
 
+            var title = "Alarmo! Alarmo!";
+            if (data.ContainsKey("title"))
+            {
+                var titleOverride = data["title"];
+                if (!string.IsNullOrWhiteSpace(titleOverride))
+                    title = titleOverride;
+            }
+
+            var message = "Unrecognized Person Detected!";
+            if (data.ContainsKey("message"))
+            {
+                var messageOverride = data["message"];
+                if (!string.IsNullOrWhiteSpace(messageOverride))
+                    message = messageOverride;
+            }
+
+            var channelId = "DetectionsChannel_01";
+            var uri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
             var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
             var notificationBuilder = new Notification.Builder(this)
                 .SetSmallIcon(Resource.Drawable.ic_logo)
-                .SetContentTitle("Alarmo! Alarmo!")
-                .SetContentText("Unrecognized Person Detected!")
+                .SetContentTitle(title)
+                .SetContentText(message)
                 .SetAutoCancel(true)
+                .SetChannelId(channelId)
                 .SetContentIntent(pendingIntent);
+
+            var imageReference = data.ContainsKey("imageReference") ? data["imageReference"] : null;
+            if (!string.IsNullOrWhiteSpace(imageReference))
+            {
+                imageReference = imageReference.WithToken();
+                //todo: set image notification style
+            }
 
             var notification = notificationBuilder.Build();
             var notificationManager = NotificationManager.FromContext(this);
+
+            var channel = new NotificationChannel(channelId, "Detections Channel", NotificationImportance.High);
+            notificationManager.CreateNotificationChannel(channel);
             notificationManager.Notify(0, notification);
         }
     }
