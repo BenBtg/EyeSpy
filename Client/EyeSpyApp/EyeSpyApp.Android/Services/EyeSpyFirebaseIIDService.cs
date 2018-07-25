@@ -25,18 +25,19 @@ namespace EyeSpyApp.Android.Services
         {
             try
             {
+                var deviceId = "1234567890";
                 var connection = "Endpoint=sb://eyespynotificationnamespacehack2018.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=6hUFdXZvxHmExKOi7iht3M8ZcAHxbejg0L/LzgezsXQ=";
                 var client = NotificationHubClient.CreateClientFromConnectionString(connection, "eyespynotificationhubhack2018");
                 var installation = new Installation
                 {
-                    InstallationId = token,
+                    InstallationId = deviceId,
                     Platform = NotificationPlatform.Gcm,
                     PushChannel = token,
                     Tags = new List<string>() { "eyespy" },
                 };
                 await client.CreateOrUpdateInstallationAsync(installation);
 
-                var registeredInstallation = await client.GetInstallationAsync(token);
+                var registeredInstallation = await client.GetInstallationAsync(deviceId);
 
                 Log.Debug(TAG, $"Successful created/updated installation with ID {registeredInstallation?.InstallationId}");
             }
