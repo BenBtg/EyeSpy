@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Media;
 using Android.Util;
-using Firebase.Messaging;
-using System.Collections.Generic;
 using EyeSpyApp.Helpers;
+using Firebase.Messaging;
 
 namespace EyeSpyApp.Droid.Services
 {
@@ -21,7 +23,7 @@ namespace EyeSpyApp.Droid.Services
             SendNotification(message.GetNotification()?.Body, message.Data);
         }
 
-        void SendNotification(string messageBody, IDictionary<string, string> data)
+        private async Task SendNotification(string messageBody, IDictionary<string, string> data)
         {
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop);
@@ -55,13 +57,30 @@ namespace EyeSpyApp.Droid.Services
                 .SetContentText(message)
                 .SetAutoCancel(true)
                 .SetChannelId(channelId)
-                .SetContentIntent(pendingIntent);
+                .SetContentIntent(pendingIntent)
+                .SetDefaults(NotificationDefaults.Sound);
 
             var imageReference = data.ContainsKey("imageReference") ? data["imageReference"] : null;
             if (!string.IsNullOrWhiteSpace(imageReference))
             {
-                imageReference = imageReference.WithToken();
-                //todo: set image notification style
+                try
+                {
+                    imageReference = imageReference.WithToken();
+                    var notificationStyle = new Notification.BigPictureStyle();
+                    notificationStyle.SetSummaryText(message);
+                    var client = new HttpClient();
+                    var imageStream = await client.GetStreamAsync(imageReference);
+                    //var imageUrl = new global::Java.Net.URL(imageReference);
+                    //var imageContent = (global::Java.IO.InputStream)imageUrl.Content;
+                    var detectionImage = global::Android.Graphics.BitmapFactory.DecodeStream(imageStream);
+                    notificationStyle.BigPicture(detectionImage);
+                    notificationStyle.BigLargeIcon(detectionImage);
+                    notificationBuilder.SetStyle(notificationStyle);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                }
             }
 
             var notification = notificationBuilder.Build();
