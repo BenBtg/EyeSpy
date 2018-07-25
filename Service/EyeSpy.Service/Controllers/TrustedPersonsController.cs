@@ -27,6 +27,9 @@ namespace EyeSpy.Service.Controllers
 
         // TODO: Allow upload of one or more pictures - MVP: Just accept one
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(TrustedPerson), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Post([FromQuery]string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -51,6 +54,7 @@ namespace EyeSpy.Service.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<TrustedPerson>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get()
         {
             var trustedPersons = await this.trustedPersonsStorage.GetTrustedPersonsAsync();
@@ -58,6 +62,9 @@ namespace EyeSpy.Service.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(TrustedPerson), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(string id)
         {
             if (string.IsNullOrWhiteSpace(id))

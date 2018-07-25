@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using EyeSpy.Service.Common;
@@ -31,6 +32,9 @@ namespace EyeSpy.Service.Controllers
 
         // NOTE: In future, do we track all historic detections?
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task <IActionResult> Post()
         {
             byte[] detectionImageData = this.Request.Body.ToBytes();
@@ -67,6 +71,7 @@ namespace EyeSpy.Service.Controllers
         // Need a Get method here to retrieve detection from table by id i.e. deep link provided in notification
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<Detection>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get()
         {
             var detections = await this.trustedPersonsStorage.GetDetectionsAsync();
@@ -74,6 +79,9 @@ namespace EyeSpy.Service.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Detection), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(string id)
         {
             if (string.IsNullOrWhiteSpace(id))

@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using EyeSpy.Service.AzureStorage.Services;
 using EyeSpy.Service.NotificationHub.Services;
 using EyeSpy.Service.NotificationHub.Models;
+using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 
 namespace EyeSpy.Service
 {
@@ -34,6 +36,7 @@ namespace EyeSpy.Service
             var faceApiSubscriptionKey = Configuration.GetValue<string>(ServiceConstants.FaceApiSubscriptionKeySetting);
             var azureStorageAccountName = Configuration.GetValue<string>(ServiceConstants.AzureStorageAccountNameSetting);
             var azureStorageAccountKey = Configuration.GetValue<string>(ServiceConstants.AzureStorageAccountKeySetting);
+            var appInsightsInstrumentationKey = Configuration.GetValue<string>(ServiceConstants.AppInsightsKeySettings);
             var notificationHubNamespace = Configuration.GetValue<string>(ServiceConstants.NotificationHubNamespaceSetting);
             var notificationHubName = Configuration.GetValue<string>(ServiceConstants.NotificationHubNameSetting);
             var notificationHubKeyName = Configuration.GetValue<string>(ServiceConstants.NotificationHubKeyNameSetting);
@@ -53,7 +56,34 @@ namespace EyeSpy.Service
             services.AddSingleton<ITrustedPersonsStorage>(new AzureTrustedPersonsStorage(azureStorageAccountName, azureStorageAccountKey));
             services.AddSingleton<ITrustedPersonsNotifications>(new AzureTrustedPersonsNotifications(hubConfig));
 
+            services.AddSwaggerGen(i =>
+            {
+                i.SwaggerDoc("v1.0", new Info
+                {
+                    Title = "Eye Spy API",
+                    Version = "v1.0"
+                });
+
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"apikey", new string[] { }},
+                };
+
+                i.AddSecurityDefinition("apikey", new ApiKeyScheme
+                {
+                    Description = "Api key header using the apikey scheme. Example: \"apikey: {key}\"",
+                    Name = "apikey",
+                    In = "header",
+                    Type = "apiKey"
+                });
+
+                i.AddSecurityRequirement(security);
+
+                i.MapType<Stream>(() => new Schema { Type = "file" });
+            });
+
             services.AddMvc();
+            services.AddApplicationInsightsTelemetry(appInsightsInstrumentationKey);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +94,17 @@ namespace EyeSpy.Service
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("default");
             app.UseAuthentication();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(i =>
+            {
+                i.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Eye Spy Api v1.0");
+                i.DocumentTitle = "Eye Spy Api Documentation";
+                i.DocExpansion(DocExpansion.None);
+            });
+
             app.UseMvc();
         }
     }

@@ -11,5 +11,6 @@
         public const string NotificationHubNameSetting = "NOTIFICATION_HUB_NAME";
         public const string NotificationHubKeyNameSetting = "NOTIFICATION_HUB_KEY_NAME";
         public const string NotificationHubKeySetting = "NOTIFICATION_HUB_KEY";
+        public const string AppInsightsKeySettings = "APP_INSIGHTS_KEY";
     }
 }

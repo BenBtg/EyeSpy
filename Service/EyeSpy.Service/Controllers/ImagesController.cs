@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using EyeSpy.Service.Common.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +20,7 @@ namespace EyeSpy.Service.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(Stream), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get([FromQuery]string path, [FromQuery]string name)
         {
             var imageBytes = await this.trustedPersonsStorage.GetMediaContentAsync(path, name);
