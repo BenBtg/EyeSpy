@@ -24,11 +24,19 @@ namespace EyeSpyApp.ViewModels
             _detectionId = detectionId;
         }
 
+        public DetectionDetailsViewModel(Detection detection)
+        {
+            Title = "Alarmo! Alarmo!";
+            _detectionId = detection.Id;
+            Detection = detection;
+        }
+
         public async Task Init()
         {
-            Detection = await EyeSpyService.Value.GetDetection(_detectionId);
-            Detection.DetectionImageUrl = Detection.ImageReference.WithToken();
+            if (Detection == null)
+                Detection = await EyeSpyService.Value.GetDetection(_detectionId);
 
+            Detection.DetectionImageUrl = Detection.ImageReference.WithToken();
         }
     }
 }
