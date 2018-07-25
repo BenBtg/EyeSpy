@@ -41,7 +41,7 @@ namespace EyeSpyApp.ViewModels
                     {
                         Id = tp.Id,
                         Text = tp.Name,
-                        ImageUrl = tp.ProfileUrl.WithSasToken("TBD"),
+                        ImageUrl = tp.ImageReference.WithToken(),
                         Description = $"Last activity: {DateTime.Now:d}",
                     })
                     .ToList()

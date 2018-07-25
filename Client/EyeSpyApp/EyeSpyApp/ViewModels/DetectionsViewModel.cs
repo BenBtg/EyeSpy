@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using EyeSpy.Shared;
 using Xamarin.Forms;
+using EyeSpyApp.Helpers;
 
 namespace EyeSpyApp.ViewModels
 {
@@ -30,7 +31,11 @@ namespace EyeSpyApp.ViewModels
             {
                 var detections = await EyeSpyService.Value.GetDetections();
                 Detections.Clear();
-                detections.ForEach(Detections.Add);
+                detections.ForEach(d=> 
+                {
+                    d.DetectionImageUrl = d.ImageReference.WithToken();
+                    Detections.Add(d);
+                });
             }
             catch (Exception ex)
             {

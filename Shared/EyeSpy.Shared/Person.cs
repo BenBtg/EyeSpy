@@ -7,6 +7,7 @@ namespace EyeSpy.Shared
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public string ImageReference { get; set; }
         public string ProfileUrl { get; set; }
     }
 }

@@ -21,30 +21,17 @@ namespace EyeSpyApp.Views
             InitializeComponent();
         }
 
-        //async void OnMemberSelected(object sender, SelectedItemChangedEventArgs args)
-        //{
-        //    var member = args.SelectedItem as HouseholdMember;
-        //    if (member == null)
-        //        return;
-
-        //    var memberDetailsContext = new MemberDetailsViewModel(member);
-        //    var detailsPage = new MemberDetailsPage() { BindingContext = memberDetailsContext };
-        //    await Navigation.PushAsync(detailsPage);
-        //    MembersListView.SelectedItem = null;
-        //}
-
-        //async void AddMember_Clicked(object sender, EventArgs e)
-        //{
-        //    var newMemberPage = new NewMemberPage();
-        //    await Navigation.PushAsync(newMemberPage);
-        //}
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
             if (ViewModel.Detections.Count == 0)
                 ViewModel.LoadDetectionsCommand.Execute(null);
+        }
+
+        void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+        {
+            DetectionsListView.SelectedItem = null;
         }
     }
 }

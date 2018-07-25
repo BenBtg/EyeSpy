@@ -19,7 +19,8 @@
                 RefreshCommand="{Binding LoadDetectionsCommand}" 
                 IsPullToRefreshEnabled="true" 
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}" 
-                CachingStrategy="RecycleElement">
+                CachingStrategy="RecycleElement"
+                ItemSelected="Handle_ItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -39,7 +40,6 @@
                                     WidthRequest="120"
                                     HeightRequest="120"
                                     Source="{Binding DetectionImageUrl}"
-                                    BackgroundColor="{StaticResource NavigationPrimary}"
                                     />
                                 
                                 <Label 
