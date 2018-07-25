@@ -3,6 +3,8 @@ using EyeSpy.Service.Common;
 using EyeSpy.Service.Common.Abstractions;
 using EyeSpy.Service.Common.Models;
 using EyeSpy.Service.FaceApi.Services;
+using EyeSpy.Service.NotificationHub.Models;
+using EyeSpy.Service.NotificationHub.Services;
 using System;
 using System.IO;
 using System.Linq;
@@ -17,12 +19,34 @@ namespace EyeSpy.Service.Scratch
             Console.WriteLine("Hello World!");
             //TestStorageAsync().Wait();
             //TestRetrievalAsync().Wait();
-            TestAddPersonService().Wait();
+            //TestAddPersonService().Wait();
+            TestNotification().Wait();
+        }
+
+        private static async Task TestNotification()
+        {
+            var hubConfig = new NotificationHubConfiguration("EyeSpyNotificationNamespaceHack2018", "EyeSpyNotificationHubHack2018", "DefaultFullSharedAccessSignature", "6hUFdXZvxHmExKOi7iht3M8ZcAHxbejg0L/LzgezsXQ=");
+            ITrustedPersonsNotifications trustedPersonsNotifications = new AzureTrustedPersonsNotifications(hubConfig);
+
+            var baseAddressTest = hubConfig.BaseAddress;
+
+            var tokenTestPart1 = hubConfig.GetToken();
+            var tokenTestPart2 = hubConfig.GetToken();
+
+            var testSend = await trustedPersonsNotifications.SendDetectionNotificationAsync<DetectionNotification>(new DetectionNotification
+            {
+                Title = "Eye Spy Alert",
+                Message = "Unrecognized person detected",
+                DetectionId = "195d6b0d-9ddb-4266-9db8-9b554ad0a8eb",
+                ImageReference = "path=dtcontainer&name=195d6b0d-9ddb-4266-9db8-9b554ad0a8eb"
+            });
+
+            var x = 0;
         }
 
         private static async Task TestAddPersonService()
         {
-            ITrustedPersonsService trustedPersonsService = new FaceApiTrustedPersonsService("<face_api_endpoint>", "<face_subscription_key>");
+            ITrustedPersonsFaceRecognition trustedPersonsService = new FaceApiTrustedPersonsFaceRecognition("<face_api_endpoint>", "<face_subscription_key>");
 
             byte[] trustedPersonImage;
 
@@ -32,10 +56,6 @@ namespace EyeSpy.Service.Scratch
             var trustedPerson = await trustedPersonsService.CreateTrustedPersonAsync("Ben Buttigieg", trustedPersonImage);
             var trustedPersons = await trustedPersonsService.GetTrustedPersonsAsync();
             var lastTrustedPerson = await trustedPersonsService.GetTrustedPersonByIdAsync(trustedPersons.LastOrDefault()?.Id); 
-
-            
-
-            var x = 0;
         }
 
         private static async Task TestRetrievalAsync()

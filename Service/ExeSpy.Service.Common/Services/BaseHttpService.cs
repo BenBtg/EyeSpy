@@ -51,6 +51,12 @@ namespace EyeSpy.Service.Common.Services
             await SendWithRetryAsync<NoContentResult>(HttpMethod.Post, requestUri, modifyRequestAction);
         }
 
+        protected async Task PostAsync<K>(string requestUri, K obj, Action<HttpRequestMessage> modifyRequestAction = null) // where object
+        {
+            var jsonRequest = await SerializeObjectAsync<K>(obj).ConfigureAwait(false);
+            await SendWithRetryAsync<NoContentResult>(HttpMethod.Post, requestUri, modifyRequestAction, jsonRequest);
+        }
+
         protected Task<T> PostAsync<T>(string requestUri, Action<HttpRequestMessage> modifyRequestAction = null)
         {
             return SendWithRetryAsync<T>(HttpMethod.Post, requestUri, modifyRequestAction);
@@ -60,7 +66,7 @@ namespace EyeSpy.Service.Common.Services
         {
             var jsonRequest = await SerializeObjectAsync<K>(obj).ConfigureAwait(false);
             return await SendWithRetryAsync<T>(HttpMethod.Post, requestUri, modifyRequestAction, jsonRequest);
-        }
+        }        
 
         protected async Task<T> PostAsync<T>(string requestUri, byte[] dataContent, Action<HttpRequestMessage> modifyRequestAction = null) // where object
         {

@@ -18,13 +18,15 @@ namespace EyeSpy.Service.Controllers
     [Authorize]
     public class DetectionsController : Controller
     {
-        private readonly ITrustedPersonsService trustedPersonsService;
+        private readonly ITrustedPersonsFaceRecognition trustedPersonsService;
         private readonly ITrustedPersonsStorage trustedPersonsStorage;
+        private readonly ITrustedPersonsNotifications trustedPersonsNotifications;
 
-        public DetectionsController(ITrustedPersonsService trustedPersonsService, ITrustedPersonsStorage trustedPersonsStorage)
+        public DetectionsController(ITrustedPersonsFaceRecognition trustedPersonsService, ITrustedPersonsStorage trustedPersonsStorage, ITrustedPersonsNotifications trustedPersonsNotifications)
         {
             this.trustedPersonsService = trustedPersonsService;
             this.trustedPersonsStorage = trustedPersonsStorage;
+            this.trustedPersonsNotifications = trustedPersonsNotifications;
         }
 
         // NOTE: In future, do we track all historic detections?
@@ -36,12 +38,27 @@ namespace EyeSpy.Service.Controllers
             if (detectionImageData?.Length <= 0)
                 return new BadRequestObjectResult($"Binary body payload must not be empty");
 
-            var trustedPerson = await this.trustedPersonsService.DetectIfPersonIsTrustedAsync(detectionImageData);
+            bool trustedPerson = true;
+            Detection detection = null;
 
-            if (!trustedPerson)
+            // Execute trusted person check and detection creation in parallel
+            List<Task> parallelTasks = new List<Task>
             {
-                // TODO: Raise alert!    
-                var detection = await trustedPersonsStorage.CreateDetectionAsync(new BaseDetection { Id = Guid.NewGuid().ToString().ToLower() }, detectionImageData);
+                Task.Run(async () => { trustedPerson = await this.trustedPersonsService.DetectIfPersonIsTrustedAsync(detectionImageData); }),
+                Task.Run(async () => { detection = await trustedPersonsStorage.CreateDetectionAsync(new BaseDetection { Id = Guid.NewGuid().ToString().ToLower() }, detectionImageData); })
+            };
+
+            await Task.WhenAll(parallelTasks);
+
+            if (!trustedPerson && detection != null)
+            { 
+                await this.trustedPersonsNotifications.SendDetectionNotificationAsync<DetectionNotification>(new DetectionNotification
+                {
+                    Title = "Eye spy with my little eye..",
+                    Message = "Unrecognized person detected",
+                    DetectionId = detection.Id,
+                    ImageReference = detection.ImageReference
+                });
             }
 
             return new OkObjectResult(trustedPerson); ;

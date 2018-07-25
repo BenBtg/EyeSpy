@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using EyeSpy.Service.AzureStorage.Services;
+using EyeSpy.Service.NotificationHub.Services;
+using EyeSpy.Service.NotificationHub.Models;
 
 namespace EyeSpy.Service
 {
@@ -27,11 +29,16 @@ namespace EyeSpy.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            ApiKey = Configuration.GetValue<string>(ServiceConstants.EyeSpyKey);
-            var faceApiEndpoint = Configuration.GetValue<string>(ServiceConstants.FaceApiEndpoint);
-            var faceApiSubscriptionKey = Configuration.GetValue<string>(ServiceConstants.FaceApiSubscriptionKeySettingName);
-            var azureStorageAccountName = Configuration.GetValue<string>(ServiceConstants.AzureStorageAccountName);
-            var azureStorageAccountKey = Configuration.GetValue<string>(ServiceConstants.AzureStorageAccountKey);
+            ApiKey = Configuration.GetValue<string>(ServiceConstants.EyeSpyKeySetting);
+            var faceApiEndpoint = Configuration.GetValue<string>(ServiceConstants.FaceApiEndpointSetting);
+            var faceApiSubscriptionKey = Configuration.GetValue<string>(ServiceConstants.FaceApiSubscriptionKeySetting);
+            var azureStorageAccountName = Configuration.GetValue<string>(ServiceConstants.AzureStorageAccountNameSetting);
+            var azureStorageAccountKey = Configuration.GetValue<string>(ServiceConstants.AzureStorageAccountKeySetting);
+            var notificationHubNamespace = Configuration.GetValue<string>(ServiceConstants.NotificationHubNamespaceSetting);
+            var notificationHubName = Configuration.GetValue<string>(ServiceConstants.NotificationHubNameSetting);
+            var notificationHubKeyName = Configuration.GetValue<string>(ServiceConstants.NotificationHubKeyNameSetting);
+            var notificationHubKey = Configuration.GetValue<string>(ServiceConstants.NotificationHubKeySetting);
+            var hubConfig = new NotificationHubConfiguration(notificationHubNamespace, notificationHubName, notificationHubKeyName, notificationHubKey);
 
             services.AddAuthentication(options =>
             {
@@ -42,8 +49,9 @@ namespace EyeSpy.Service
                 options.ApiKey = ApiKey;
             });
 
-            services.AddSingleton<ITrustedPersonsService>(new FaceApiTrustedPersonsService(faceApiEndpoint, faceApiSubscriptionKey));
+            services.AddSingleton<ITrustedPersonsFaceRecognition>(new FaceApiTrustedPersonsFaceRecognition(faceApiEndpoint, faceApiSubscriptionKey));
             services.AddSingleton<ITrustedPersonsStorage>(new AzureTrustedPersonsStorage(azureStorageAccountName, azureStorageAccountKey));
+            services.AddSingleton<ITrustedPersonsNotifications>(new AzureTrustedPersonsNotifications(hubConfig));
 
             services.AddMvc();
         }

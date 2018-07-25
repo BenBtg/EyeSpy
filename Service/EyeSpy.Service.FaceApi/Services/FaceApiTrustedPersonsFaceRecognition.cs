@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EyeSpy.Service.Common.Abstractions;
@@ -9,7 +8,7 @@ using EyeSpy.Service.FaceApi.Models;
 
 namespace EyeSpy.Service.FaceApi.Services
 {
-    public class FaceApiTrustedPersonsService : ITrustedPersonsService
+    public class FaceApiTrustedPersonsFaceRecognition : ITrustedPersonsFaceRecognition
     {
         private readonly string apiEndpoint;
         private readonly string subscriptionKey;
@@ -20,7 +19,7 @@ namespace EyeSpy.Service.FaceApi.Services
         private FaceDetectService faceDetectService;
         private FaceIdentifyService faceIdentifyService;
 
-        public FaceApiTrustedPersonsService(string faceApiEndpoint, string faceApiSubscriptionKey)
+        public FaceApiTrustedPersonsFaceRecognition(string faceApiEndpoint, string faceApiSubscriptionKey)
         {
             if (string.IsNullOrWhiteSpace(faceApiEndpoint) || string.IsNullOrWhiteSpace(faceApiSubscriptionKey))
                 throw new ArgumentNullException($"{nameof(faceApiEndpoint)} and {nameof(faceApiSubscriptionKey)} must have values assigned");

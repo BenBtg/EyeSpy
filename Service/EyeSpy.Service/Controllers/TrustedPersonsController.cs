@@ -16,10 +16,10 @@ namespace EyeSpy.Service.Controllers
     [Authorize]
     public class TrustedPersonsController : Controller
     {
-        private readonly ITrustedPersonsService trustedPersonsService;
+        private readonly ITrustedPersonsFaceRecognition trustedPersonsService;
         private readonly ITrustedPersonsStorage trustedPersonsStorage;
 
-        public TrustedPersonsController(ITrustedPersonsService trustedPersonsService, ITrustedPersonsStorage trustedPersonsStorage)
+        public TrustedPersonsController(ITrustedPersonsFaceRecognition trustedPersonsService, ITrustedPersonsStorage trustedPersonsStorage)
         {
             this.trustedPersonsService = trustedPersonsService;
             this.trustedPersonsStorage = trustedPersonsStorage;

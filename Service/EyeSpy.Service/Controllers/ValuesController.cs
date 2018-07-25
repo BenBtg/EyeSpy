@@ -12,9 +12,9 @@ namespace EyeSpy.Service.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        private readonly ITrustedPersonsService trustedPersonsService;
+        private readonly ITrustedPersonsFaceRecognition trustedPersonsService;
 
-        public ValuesController(ITrustedPersonsService trustedPersonsService)
+        public ValuesController(ITrustedPersonsFaceRecognition trustedPersonsService)
         {
             this.trustedPersonsService = trustedPersonsService;
         }

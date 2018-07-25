@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace EyeSpy.Service.Common.Abstractions
 {
-    public interface ITrustedPersonsService
+    public interface ITrustedPersonsFaceRecognition
     {
         Task<BaseTrustedPerson> CreateTrustedPersonAsync(string trustedPersonName, byte[] persistedFaceImageData);
         Task<List<BaseTrustedPerson>> GetTrustedPersonsAsync();
