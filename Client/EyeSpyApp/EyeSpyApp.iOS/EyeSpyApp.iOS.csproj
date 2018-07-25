@@ -99,6 +99,8 @@
     <BundleResource Include="Resources\tab_household%403x.png" />
     <BundleResource Include="Resources\tab_detections%402x.png" />
     <BundleResource Include="Resources\tab_detections%403x.png" />
+    <BundleResource Include="Resources\ic_alarm%403x.png" />
+    <BundleResource Include="Resources\ic_alarm%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

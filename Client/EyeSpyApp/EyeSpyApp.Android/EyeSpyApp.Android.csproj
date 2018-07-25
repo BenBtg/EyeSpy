@@ -121,6 +121,7 @@
     <AndroidResource Include="Resources\drawable\ic_add.png" />
     <AndroidResource Include="Resources\drawable\tab_household.png" />
     <AndroidResource Include="Resources\drawable\tab_detections.png" />
+    <AndroidResource Include="Resources\drawable\ic_alarm.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable-hdpi\" />

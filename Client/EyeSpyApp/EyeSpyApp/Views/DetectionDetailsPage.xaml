@@ -17,9 +17,18 @@
             Source="{Binding Detection.DetectionImageUrl}"
             />
         
-        <StackLayout Grid.Row="1" Spacing="20" Padding="10">
-            <Label Text="{Binding Detection.DetectionTimestamp, StringFormat='Detected: {0}'}" FontSize="Large" />
-            <Label Text="{Binding Detection.Id}" FontSize="Small" />
+        <StackLayout Grid.Row="1" Spacing="10" Padding="10">
+            <Label 
+                Text="{Binding Detection.DetectionTimestamp, StringFormat='Detected: {0}'}" 
+                FontSize="Medium" />
+            <Label 
+                Text="{Binding Detection.Id}" 
+                FontSize="Micro" />
+            <Image 
+                Source="ic_alarm.png" 
+                WidthRequest="50"
+                HeightRequest="50"
+                HorizontalOptions="Center"/>
         </StackLayout>
     </Grid>
 </ContentPage>
