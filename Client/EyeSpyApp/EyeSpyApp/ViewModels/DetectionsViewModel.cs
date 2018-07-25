@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EyeSpy.Shared;
 using Xamarin.Forms;
 using EyeSpyApp.Helpers;
+using System.Linq;
 
 namespace EyeSpyApp.ViewModels
 {
@@ -30,6 +31,7 @@ namespace EyeSpyApp.ViewModels
             try
             {
                 var detections = await EyeSpyService.Value.GetDetections();
+                detections = detections.OrderByDescending(d => d.DetectionTimestamp ?? DateTime.MinValue).ToList();
                 Detections.Clear();
                 detections.ForEach(d=> 
                 {
