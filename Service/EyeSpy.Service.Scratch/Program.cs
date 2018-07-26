@@ -3,6 +3,7 @@ using EyeSpy.Service.Common;
 using EyeSpy.Service.Common.Abstractions;
 using EyeSpy.Service.Common.Models;
 using EyeSpy.Service.FaceApi.Services;
+using EyeSpy.Service.Imaging.Services;
 using EyeSpy.Service.NotificationHub.Models;
 using EyeSpy.Service.NotificationHub.Services;
 using System;
@@ -20,7 +21,28 @@ namespace EyeSpy.Service.Scratch
             //TestStorageAsync().Wait();
             //TestRetrievalAsync().Wait();
             //TestAddPersonService().Wait();
-            TestNotification().Wait();
+            //TestNotification().Wait();
+            TestImageTransformation();
+        }
+
+        private static void TestImageTransformation()
+        {
+            byte[] trustedPersonImage;
+
+            using (var filestream = File.Open(@"C:\Users\mikep\Desktop\FACE\demoInput.png", FileMode.Open))
+                trustedPersonImage = filestream.ToBytes();
+
+            ITrustedPersonsImageService imageService = new ImageSharpTrustedPersonsImageService();
+
+            var transformedImage = imageService.ConvertImageToJpg(trustedPersonImage);
+
+            using (var filestream = File.Open(@"C:\Users\mikep\Desktop\FACE\demoOutput.jpg", FileMode.OpenOrCreate))
+            {
+                using (var memoryStream = new MemoryStream(transformedImage))
+                {
+                    memoryStream.CopyTo(filestream);
+                }
+            }
         }
 
         private static async Task TestNotification()

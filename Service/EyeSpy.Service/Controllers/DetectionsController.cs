@@ -22,18 +22,23 @@ namespace EyeSpy.Service.Controllers
         private readonly ITrustedPersonsFaceRecognition trustedPersonsService;
         private readonly ITrustedPersonsStorage trustedPersonsStorage;
         private readonly ITrustedPersonsNotifications trustedPersonsNotifications;
+        private readonly ITrustedPersonsImageService trustedPersonsImageService;
 
-        public DetectionsController(ITrustedPersonsFaceRecognition trustedPersonsService, ITrustedPersonsStorage trustedPersonsStorage, ITrustedPersonsNotifications trustedPersonsNotifications)
+        public DetectionsController(
+            ITrustedPersonsFaceRecognition trustedPersonsService, 
+            ITrustedPersonsStorage trustedPersonsStorage, 
+            ITrustedPersonsNotifications trustedPersonsNotifications,
+            ITrustedPersonsImageService trustedPersonsImageService)
         {
             this.trustedPersonsService = trustedPersonsService;
             this.trustedPersonsStorage = trustedPersonsStorage;
             this.trustedPersonsNotifications = trustedPersonsNotifications;
+            this.trustedPersonsImageService = trustedPersonsImageService;
         }
 
         // NOTE: In future, do we track all historic detections?
         [HttpPost]
         [Consumes("application/octet-stream")]
-        [Produces("application/octet-stream")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -43,6 +48,8 @@ namespace EyeSpy.Service.Controllers
 
             if (detectionImageData?.Length <= 0)
                 return new BadRequestObjectResult($"Binary body payload must not be empty");
+
+            detectionImageData = this.trustedPersonsImageService.ConvertImageToJpg(detectionImageData);
 
             bool trustedPerson = true;
             Detection detection = null;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -18,11 +19,13 @@ namespace EyeSpy.Service.Controllers
     {
         private readonly ITrustedPersonsFaceRecognition trustedPersonsService;
         private readonly ITrustedPersonsStorage trustedPersonsStorage;
+        private readonly ITrustedPersonsImageService trustedPersonsImageService;
 
-        public TrustedPersonsController(ITrustedPersonsFaceRecognition trustedPersonsService, ITrustedPersonsStorage trustedPersonsStorage)
+        public TrustedPersonsController(ITrustedPersonsFaceRecognition trustedPersonsService, ITrustedPersonsStorage trustedPersonsStorage, ITrustedPersonsImageService trustedPersonsImageService)
         {
             this.trustedPersonsService = trustedPersonsService;
             this.trustedPersonsStorage = trustedPersonsStorage;
+            this.trustedPersonsImageService = trustedPersonsImageService;
         }
 
         // TODO: Allow upload of one or more pictures - MVP: Just accept one
@@ -39,6 +42,8 @@ namespace EyeSpy.Service.Controllers
 
             if (trustedPersonImageData?.Length <= 0)
                 return new BadRequestObjectResult($"Binary body payload must not be empty");
+
+            trustedPersonImageData = this.trustedPersonsImageService.ConvertImageToJpg(trustedPersonImageData);
 
             // Create the trusted person in Face API (to get the ID)
             var baseTrustedPerson = await trustedPersonsService.CreateTrustedPersonAsync(name, trustedPersonImageData);

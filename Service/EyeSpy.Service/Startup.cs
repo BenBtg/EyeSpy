@@ -14,6 +14,7 @@ using EyeSpy.Service.NotificationHub.Services;
 using EyeSpy.Service.NotificationHub.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
+using EyeSpy.Service.Imaging.Services;
 
 namespace EyeSpy.Service
 {
@@ -55,6 +56,7 @@ namespace EyeSpy.Service
             services.AddSingleton<ITrustedPersonsFaceRecognition>(new FaceApiTrustedPersonsFaceRecognition(faceApiEndpoint, faceApiSubscriptionKey));
             services.AddSingleton<ITrustedPersonsStorage>(new AzureTrustedPersonsStorage(azureStorageAccountName, azureStorageAccountKey));
             services.AddSingleton<ITrustedPersonsNotifications>(new AzureTrustedPersonsNotifications(hubConfig));
+            services.AddSingleton<ITrustedPersonsImageService>(new ImageSharpTrustedPersonsImageService());
 
             services.AddSwaggerGen(i =>
             {
