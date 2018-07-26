@@ -49,7 +49,6 @@ namespace EyeSpyApp.Droid.Services
                     message = messageOverride;
             }
 
-            var channelId = "DetectionsChannel_01";
             var uri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
             var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
             var notificationBuilder = new Notification.Builder(this)
@@ -57,7 +56,6 @@ namespace EyeSpyApp.Droid.Services
                 .SetContentTitle(title)
                 .SetContentText(message)
                 .SetAutoCancel(true)
-                .SetChannelId(channelId)
                 .SetContentIntent(pendingIntent)
                 .SetDefaults(NotificationDefaults.Sound);
 
@@ -84,11 +82,16 @@ namespace EyeSpyApp.Droid.Services
                 }
             }
 
-            var notification = notificationBuilder.Build();
             var notificationManager = NotificationManager.FromContext(this);
+            if (global::Android.OS.Build.VERSION.SdkInt >= global::Android.OS.BuildVersionCodes.O)
+            {
+                var channelId = "DetectionsChannel_01";
+                var channel = new NotificationChannel(channelId, "Detections Channel", NotificationImportance.High);
+                notificationManager.CreateNotificationChannel(channel);
+                notificationBuilder.SetChannelId(channelId);
+            }
 
-            var channel = new NotificationChannel(channelId, "Detections Channel", NotificationImportance.High);
-            notificationManager.CreateNotificationChannel(channel);
+            var notification = notificationBuilder.Build();
             notificationManager.Notify(0, notification);
         }
     }
