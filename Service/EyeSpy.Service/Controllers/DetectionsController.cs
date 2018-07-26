@@ -32,6 +32,8 @@ namespace EyeSpy.Service.Controllers
 
         // NOTE: In future, do we track all historic detections?
         [HttpPost]
+        [Consumes("application/octet-stream")]
+        [Produces("application/octet-stream")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.OK)]

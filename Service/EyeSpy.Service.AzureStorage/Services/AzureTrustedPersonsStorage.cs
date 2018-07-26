@@ -62,7 +62,7 @@ namespace EyeSpy.Service.AzureStorage.Services
         }
 
         public async Task<IList<TrustedPerson>> GetTrustedPersonsAsync()
-        {
+        {           
             var trustedPersonEntities = await this.tableStorageService.RetrieveAllEntitiesAsync<TrustedPersonEntity>(KnownPersonsTableName);
             return trustedPersonEntities?.Select(i => i.ToTrustedPerson()).ToList();
         }
@@ -88,7 +88,8 @@ namespace EyeSpy.Service.AzureStorage.Services
 
         public async Task<IList<Detection>> GetDetectionsAsync()
         {
-            var detectionEntities = await this.tableStorageService.RetrieveAllEntitiesAsync<DetectionEntity>(DetectionsTableName);
+            var detectionEntities = await this.tableStorageService.RetrieveRecentEntitiesAsync<DetectionEntity>(DetectionsTableName); // NOTE: Temporary change to return only items created within the past 5 minutes for demo purposes
+            //var detectionEntities = await this.tableStorageService.RetrieveAllEntitiesAsync<DetectionEntity>(DetectionsTableName);
             return detectionEntities?.Select(i => i.ToDetection()).ToList();
         }
 

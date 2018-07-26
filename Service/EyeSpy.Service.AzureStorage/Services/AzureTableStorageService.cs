@@ -42,6 +42,20 @@ namespace EyeSpy.Service.AzureStorage.Services
             return false;
         }
 
+        public async Task<List<T>> RetrieveRecentEntitiesAsync<T>(string tableName) where T : TableEntity, new()
+        {
+            CloudTable table = this.tableClient.GetTableReference(tableName);
+
+            var entities = new List<T>();
+
+            TableQuery<T> query = new TableQuery<T>();
+            query.FilterString = TableQuery.GenerateFilterConditionForDate("Timestamp", "ge", DateTimeOffset.UtcNow.Subtract(TimeSpan.FromMinutes(5)));
+            var queryResult = await table.ExecuteQuerySegmentedAsync(query, null);
+            entities.AddRange(queryResult.Results);
+
+            return entities.OrderBy(i => i.Timestamp).ToList<T>();
+        }
+
         public async Task<List<T>> RetrieveAllEntitiesAsync<T>(string tableName) where T : TableEntity, new()
         {
             CloudTable table = this.tableClient.GetTableReference(tableName);
