@@ -41,6 +41,7 @@ namespace EyeSpyApp.Views
 
         async Task OpenDetectionDetails(string detectionId)
         {
+            await Navigation.PopToRootAsync(true);
             var detectionDetailsViewModel = new DetectionDetailsViewModel(detectionId);
             await detectionDetailsViewModel.Init();
             var detectionDetails = new DetectionDetailsPage() { BindingContext = detectionDetailsViewModel };

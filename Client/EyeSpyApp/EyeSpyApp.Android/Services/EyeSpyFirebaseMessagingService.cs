@@ -73,8 +73,10 @@ namespace EyeSpyApp.Droid.Services
                     var imageStream = await client.GetStreamAsync(imageReference);
                     var detectionImage = global::Android.Graphics.BitmapFactory.DecodeStream(imageStream);
                     notificationStyle.BigPicture(detectionImage);
-                    //notificationStyle.BigLargeIcon(detectionImage);
+                    notificationStyle.BigLargeIcon((global::Android.Graphics.Bitmap)null);
+                    notificationBuilder.SetLargeIcon(detectionImage);
                     notificationBuilder.SetStyle(notificationStyle);
+
                 }
                 catch (Exception ex)
                 {

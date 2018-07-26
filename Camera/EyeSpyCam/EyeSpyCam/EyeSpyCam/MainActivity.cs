@@ -29,11 +29,12 @@ namespace EyeSpyCam.Droid
         private static readonly string TAG = "FaceTracker";
 
         private CameraSource mCameraSource = null;
-
         private CameraSourcePreview mPreview;
         private GraphicOverlay mGraphicOverlay;
+        private DateTime? mLastDetectionAt;
+        private EyeSpyAPI eyeSpyAPI;
 
-
+        public bool IsProcessing { get; set; }
 
         public static string GreetingsText
         {
@@ -56,6 +57,7 @@ namespace EyeSpyCam.Droid
             mGraphicOverlay = FindViewById<GraphicOverlay>(Resource.Id.faceOverlay);
             //greetingsText = FindViewById<TextView>(Resource.Id.greetingsTextView);
 
+            eyeSpyAPI = new EyeSpyAPI();
 
             if (ActivityCompat.CheckSelfPermission(this, Manifest.Permission.Camera) == Permission.Granted)
             {
@@ -143,7 +145,7 @@ namespace EyeSpyCam.Droid
 
             mCameraSource = new CameraSource.Builder(context, detector)
                     .SetRequestedPreviewSize(640, 480)
-                                            .SetFacing(CameraFacing.Back)
+                    .SetFacing(CameraFacing.Back)
                     .SetRequestedFps(30.0f)
                     .Build();
 
@@ -184,7 +186,7 @@ namespace EyeSpyCam.Droid
         }
         public Tracker Create(Java.Lang.Object item)
         {
-            return new GraphicFaceTracker(mGraphicOverlay, mCameraSource);
+            return new GraphicFaceTracker(this, mGraphicOverlay, mCameraSource);
         }
 
 
@@ -217,30 +219,75 @@ namespace EyeSpyCam.Droid
                     .Show();
 
         }
+
+        public void SubmitDetectedFace(byte[] faceImageData)
+        {
+            if (faceImageData == null || faceImageData.Length == 0)
+                return;
+
+            // throttle all faces for 3 seconds from previous submission
+            if (mLastDetectionAt != null && (DateTime.UtcNow - mLastDetectionAt.Value).TotalSeconds <= 3)
+            {
+                Console.WriteLine($"{System.Environment.TickCount} face detected but throttled");
+                return;
+            }
+
+            mLastDetectionAt = DateTime.UtcNow;
+
+            Task.Run(async () =>
+            {
+                try
+                {
+
+                    IsProcessing = true;
+
+                    Console.WriteLine($"{System.Environment.TickCount} face detected. sending...");
+
+                    await eyeSpyAPI.IdentifyFacesAsync(faceImageData);
+
+                    Console.WriteLine($"{System.Environment.TickCount} face sent to the backend successfuly");
+
+                }
+
+                finally
+                {
+                    IsProcessing = false;
+                }
+
+            });
+        }
     }
 
 
     class GraphicFaceTracker : Tracker, CameraSource.IPictureCallback 
     {
+        private MainActivity mContext;
         private GraphicOverlay mOverlay;
         private FaceGraphic mFaceGraphic;
         private CameraSource mCameraSource = null;
-        private bool isProcessing = false;
-        private EyeSpyAPI eyeSpyAPI;
-
-        public GraphicFaceTracker(GraphicOverlay overlay, CameraSource cameraSource = null)
+      
+        public GraphicFaceTracker(MainActivity context, GraphicOverlay overlay, CameraSource cameraSource = null)
         {
+            mContext = context;
             mOverlay = overlay;
             mFaceGraphic = new FaceGraphic(overlay);
             mCameraSource = cameraSource;
-            eyeSpyAPI = new EyeSpyAPI();
         }
 
         public override void OnNewItem(int id, Java.Lang.Object item)
         {
             mFaceGraphic.SetId(id);
-            if (mCameraSource != null && !isProcessing)
-                mCameraSource.TakePicture(null, this);
+            if (mCameraSource != null && !mContext.IsProcessing)
+            {
+                try
+                {
+                    mCameraSource.TakePicture(null, this);
+                }
+                catch(System.Exception ex)
+                {
+                    Console.WriteLine($"Face take picture failed: {ex}");
+                }
+            }
         }
 
         public override void OnUpdate(Detector.Detections detections, Java.Lang.Object item)
@@ -265,25 +312,7 @@ namespace EyeSpyCam.Droid
 
         public void OnPictureTaken(byte[] data)
         {
-            Task.Run(async () =>
-            {
-                try
-                {
-                    isProcessing = true;
-
-                    Console.WriteLine("face detected: ");
-
-                    await eyeSpyAPI.IdentifyFacesAsync(data);
-                }
-
-                finally
-                {
-                    isProcessing = false;
-
-
-                }
-
-            });
+            mContext.SubmitDetectedFace(data);
         }
     }
 
