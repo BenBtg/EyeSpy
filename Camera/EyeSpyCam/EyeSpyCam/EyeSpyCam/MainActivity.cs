@@ -147,6 +147,7 @@ namespace EyeSpyCam.Droid
                     .SetRequestedPreviewSize(640, 480)
                     .SetFacing(CameraFacing.Back)
                     .SetRequestedFps(30.0f)
+                    .SetAutoFocusEnabled(true)
                     .Build();
 
 
